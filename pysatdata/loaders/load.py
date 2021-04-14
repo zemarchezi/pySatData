@@ -57,8 +57,8 @@ def load(trange: list=['2013-11-5', '2013-11-6'],
     if downloadonly:
         return out_files
 
-    tvars = readData_goes(out_files, usePyTplot, usePandas, suffix, time='time_ob')
-    # tvars = netcdf_to_tplot(out_files, suffix=suffix, merge=True, time='time_tag')
+    # tvars = readData_goes(out_files, usePyTplot, usePandas, suffix, time='time_ob')
+    tvars = netcdf_to_tplot(out_files, suffix=suffix, merge=True, time='time')
 
     if time_clip:
         for new_var in tvars:

@@ -126,7 +126,6 @@ def netcdf_to_tplot(filenames, time ='', prefix='', suffix='', plot=False, merge
                 var_name = prefix + var + suffix
                 to_merge = False
                 if (var_name in pytplot.data_quants.keys() and (merge == True)):
-                    print('here!!')
                     prev_data_quant = pytplot.data_quants[var_name].values
                     prev_time = pytplot.data_quants[var_name].coords['time'].values
                     to_merge = True
