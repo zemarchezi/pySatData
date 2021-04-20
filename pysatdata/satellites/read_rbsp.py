@@ -1,10 +1,4 @@
-import pandas as pd
-from pysatdata.utils.netcdf2tplot import *
-import logging
-
-#%%
-
-def readData_goes(files, usePyTplot, usePandas, suffix, time):
+def readData_rbsp(files, usePyTplot, usePandas, suffix, time):
 
     global time_ind, tvars
     for file in files:
@@ -35,5 +29,3 @@ def readData_goes(files, usePyTplot, usePandas, suffix, time):
         out_vars_df = pd.DataFrame(out_dict, index=time)
 
         return out_vars_df
-
-

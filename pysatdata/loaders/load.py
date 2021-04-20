@@ -7,7 +7,7 @@ import logging
 
 # %%
 
-def load(trange: list=['2013-11-5', '2013-11-6'],
+def load_sat(trange: list=['2013-11-5', '2013-11-6'],
          satellite: str='goes',
          probe: list=[],
          level: int=2,
@@ -26,21 +26,24 @@ def load(trange: list=['2013-11-5', '2013-11-6'],
     logging.info(f'Local Download Path: {local_path}')
 
     for prb in probe:
-        if int(prb) > 15:
-            remote_path = config_file[satellite]['remote_data_dir']
-            logging.info(f'Remotepath: {remote_path}')
-            pathformat = f"goes{prb}/l{level}/data/{instrument}-l{level}-{datatype}/%Y/%m/dn_{instrument}-l{level}-{datatype}_g{prb}_d%Y%m%d_*.nc"
-        else:
-            fullavgpath = ['full', 'avg']
-            goes_path_dir = fullavgpath[datatype == '1min' or datatype == '5min']
-            remote_path = goes_path_dir + '/%Y/%m/goes' + str(prb) + '/netcdf/'
-            if instrument == 'fgm':
-                if datatype == '512ms': # full, unaveraged data
-                    pathformat = remote_path + 'g' + str(prb) + '_magneto_512ms_%Y%m%d_%Y%m%d.nc'
-                elif datatype == '1min': # 1 min averages
-                    pathformat = remote_path + 'g' + str(prb) + '_magneto_1m_%Y%m01_%Y%m??.nc'
-                elif datatype == '5min': # 5 min averages
-                    pathformat = remote_path + 'g' + str(prb) + '_magneto_5m_%Y%m01_%Y%m??.nc'
+        if satellite == 'goes':
+            if int(prb) > 15:
+                remote_path = config_file[satellite]['remote_data_dir']
+                logging.info(f'Remotepath: {remote_path}')
+                pathformat = f"goes{prb}/l{level}/data/{instrument}-l{level}-{datatype}/%Y/%m/dn_{instrument}-l{level}-{datatype}_g{prb}_d%Y%m%d_*.nc"
+            else:
+                fullavgpath = ['full', 'avg']
+                goes_path_dir = fullavgpath[datatype == '1min' or datatype == '5min']
+                remote_path = goes_path_dir + '/%Y/%m/goes' + str(prb) + '/netcdf/'
+                if instrument == 'fgm':
+                    if datatype == '512ms': # full, unaveraged data
+                        pathformat = remote_path + 'g' + str(prb) + '_magneto_512ms_%Y%m%d_%Y%m%d.nc'
+                    elif datatype == '1min': # 1 min averages
+                        pathformat = remote_path + 'g' + str(prb) + '_magneto_1m_%Y%m01_%Y%m??.nc'
+                    elif datatype == '5min': # 5 min averages
+                        pathformat = remote_path + 'g' + str(prb) + '_magneto_5m_%Y%m01_%Y%m??.nc'
+
+        if satellite == 'rbsp':
 
         # find the full remote path names using the trange
         remote_names = dailynames(file_format=pathformat, trange=trange)
@@ -57,8 +60,7 @@ def load(trange: list=['2013-11-5', '2013-11-6'],
     if downloadonly:
         return out_files
 
-    # tvars = readData_goes(out_files, usePyTplot, usePandas, suffix, time='time_ob')
-    tvars = netcdf_to_tplot(out_files, suffix=suffix, merge=True, time='time')
+    tvars = readData_goes(out_files, usePyTplot, usePandas, suffix, time='time')
 
     if time_clip:
         for new_var in tvars:
