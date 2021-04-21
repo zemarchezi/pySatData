@@ -2,6 +2,7 @@ from pysatdata.utils.dailynames import dailynames
 from pysatdata.utils.download import download
 from pysatdata.satellites.read_goes import *
 from pysatdata.satellites.read_rbsp import *
+from pysatdata.satellites.read_ace import *
 from pathlib import Path
 from loguru import logger as logging
 import os
@@ -16,7 +17,7 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
              instrument: str='magn',
              datatype: str='hires',
              suffix: str='',
-             cadence='4sec', # for EMFISIS mag data
+             cadence='4sec', # for EMFISIS and ACE mag data
              coord='sm', # for EMFISIS mag data
              rel='rel04', # for ECT data
              get_support_data: bool = False,
@@ -95,6 +96,40 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
                     pathformat = f"{subpathformat}rbsp{prb}_{level}-1min_psbr-rps_%Y%m%d_v*.cdf"
                 elif datatype == 'rps':
                     pathformat = f"{subpathformat}rbsp{prb}_{level}_psbr-rps_%Y%m%d_v*.cdf"
+
+        if satellite == 'ace':
+            remote_path = config_file[satellite]['remote_data_dir']
+            logging.info(f'Remotepath: {remote_path}')
+
+            if instrument == 'fgm':
+                pathformat = f'mag/level_2_cdaweb/mfi_{datatype}/%Y/ac_{datatype}_mfi_%Y%m%d_v??.cdf'
+            elif instrument == 'swe':
+                pathformat = 'swepam/level_2_cdaweb/swe_' + datatype + '/%Y/ac_' + datatype + '_swe_%Y%m%d_v??.cdf'
+            elif instrument == 'epm':
+                pathformat = 'epam/level_2_cdaweb/epm_' + datatype + '/%Y/ac_' + datatype + '_epm_%Y%m%d_v??.cdf'
+            elif instrument == 'cris':
+                pathformat = 'cris/level_2_cdaweb/cris_' + datatype + '/%Y/ac_' + datatype + '_cris_%Y%m%d_v??.cdf'
+            elif instrument == 'sis':
+                pathformat = 'sis/level_2_cdaweb/sis_' + datatype + '/%Y/ac_' + datatype + '_sis_%Y%m%d_v??.cdf'
+            elif instrument == 'ule':
+                pathformat = 'uleis/level_2_cdaweb/ule_' + datatype + '/%Y/ac_' + datatype + '_ule_%Y%m%d_v??.cdf'
+            elif instrument == 'sep':
+                pathformat = 'sepica/level_2_cdaweb/sep_' + datatype + '/%Y/ac_' + datatype + '_sep_%Y%m%d_v??.cdf'
+            elif instrument == 'swics':
+                filename_dtype = datatype.split('_')[1] + '_' + datatype.split('_')[0]
+                pathformat = 'swics/level_2_cdaweb/' + datatype + '/%Y/ac_' + filename_dtype + '_%Y%m%d_v??.cdf'
+
+        if satellite == 'omni':
+            remote_path = config_file[satellite]['remote_data_dir']
+            logging.info(f'Remotepath: {remote_path}')
+            if 'min' in datatype:
+                pathformat = f'omni_cdaweb/{level}_{datatype}/%Y/omni_{level}_{datatype}_%Y%m01_v??.cdf'
+            elif 'hour' in datatype:
+                pathformat = 'omni_cdaweb/hourly/%Y/omni2_h0_mrg1hr_%Y%m01_v??.cdf'
+            else:
+                raise TypeError("%r are invalid keyword arguments" % datatype)
+
+
         # find the full remote path names using the trange
         remote_names = dailynames(file_format=pathformat, trange=trange)
 
@@ -115,6 +150,9 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
 
     if satellite == 'rbsp':
         tvars = readData_rbsp(out_files, usePyTplot, usePandas, suffix, get_support_data,
+                              varformat, varnames, notplot)
+    if satellite in ['ace', 'omni']:
+        tvars = readData_ace(out_files, usePyTplot, usePandas, suffix, get_support_data,
                               varformat, varnames, notplot)
     if time_clip:
         for new_var in tvars:
