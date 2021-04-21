@@ -1,5 +1,7 @@
 {
   "goes": {"local_data_dir": "sat_data/",
            "remote_data_dir": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/",
-           "remote_data_dir2": "https://satdat.ngdc.noaa.gov/sem/goes/data/"}
+           "remote_data_dir2": "https://satdat.ngdc.noaa.gov/sem/goes/data/"},
+  "rbsp": {"local_data_dir": "sat_data/",
+           "remote_data_dir": "https://spdf.gsfc.nasa.gov/pub/data/rbsp/"}
 }

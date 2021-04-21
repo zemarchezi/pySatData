@@ -1,6 +1,5 @@
 import pandas as pd
 from pysatdata.utils.netcdf2tplot import *
-import logging
 
 #%%
 
