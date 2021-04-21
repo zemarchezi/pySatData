@@ -1,7 +1,7 @@
 import os
 import warnings
 import requests
-import logging
+from loguru import logger as logging
 import fnmatch
 import datetime
 import pkg_resources
@@ -68,6 +68,7 @@ def download_file(url=None, filename=None, headers={}, username=None, password=N
         del headers['If-Modified-Since']
 
     # the file hasn't changed
+    print(fsrc.status_code)
     if fsrc.status_code == 304:
         logging.info('File is current: ' + filename)
         fsrc.close()

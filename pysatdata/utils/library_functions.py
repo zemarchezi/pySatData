@@ -2,12 +2,10 @@ from scipy.signal import butter, lfilter, filtfilt
 from scipy import interpolate as interp
 import numpy as np
 from numpy import pi, cos, sin, arctan2, sqrt, dot
+import matplotlib.dates as mdates
 import datetime
 import pandas as pd
-import aacgmv2
-import igrf12
-import pyIGRF
-
+from loguru import logger as logging
 
 def normD(a):
     norm = 0
@@ -53,14 +51,22 @@ def fill_nan(A):
      interpolate to fill nan values
      '''
     if np.isnan(A[0]):
-        A[0] = 0.5
+        A[0] = min(A)
+    if np.isnan(A[-1]):
+        A[-1] = min(A)
     inds = np.arange(A.shape[0])
     good = np.where(np.isfinite(A))
     f = interp.interp1d(inds[good], A[good], bounds_error=False)
     B = np.where(np.isfinite(A), A, f(inds))
     return B
 
+def format_func(value, tick_number):
+    hora = pd.to_datetime(mdates.num2date(value)).replace(tzinfo=None)
 
+    return ('{:02d}:{:02d} UTC \n {:04d}/{:02d}/{:02d}'.format(hora.hour, hora.minute, hora.year, hora.month, hora.day))
+
+
+#%%
 # convert the coordinate system from gse to field aligned system
 def rotate_field_fac(x, y, z, bx, by, bz, ex, ey, ez):
     '''
@@ -163,49 +169,15 @@ def geo2mag(incoord):
     # outcoord = np.vstack((mlat, mlon))
     return [mlat, (360.0 + mlon)]
 
-#%%
-def convert_coords(date: str = '20210405',
-                   lat_long: list = [],
-                   altitude_km: float = 100.):
-    dt = datetime.datetime.strptime(date, '%Y%m%d')
 
-    if dt.year <=2020:
-        mag = igrf12.igrf(dt, glat=float(lat_long[0]), glon=float(lat_long[1]), alt_km=altitude_km)
-        decl = mag['decl'].values[0]
-    else:
-        mag = pyIGRF.igrf_value(lat=float(lat_long[0]), lon=float(lat_long[1]), alt=altitude_km, year=dt.year)
-        mag = {'decl': mag[0],
-               'incl': mag[1],
-               'horiz': mag[2],
-               'north': mag[3],
-               'east': mag[4],
-               'down': mag[5],
-               'total': mag[6]
-        }
-        decl = mag['decl']
+def cutFlux_lshell(enSignal,lValue, EnChanel, lArray, timeArray):
 
+    l = float(lValue)
+    cutF = list()
+    cut_date = list()
+    for i, ll in enumerate(lArray):
+        if ll > l-0.01 and ll < l+0.01:
+            cutF.append(enSignal[i, EnChanel])
+            cut_date.append(timeArray[i])
 
-    # igrf13: d, i, h, x, y, z, f
-
-    cgm_lat, cgm_lon, cgm_r = aacgmv2.convert_latlon(lat_long[0],
-                                                     lat_long[1],
-                                                     altitude_km, dt, method_code='G2A')
-
-    if cgm_lon < 0:
-        cgm_lon = 360 + cgm_lon
-
-    mlt_ut = aacgmv2.convert_mlt(cgm_lon, datetime.datetime(int(dt.year), 1, 1, 0, 0, 0), m2a=False)
-    mlt = 24 - mlt_ut
-
-    l_dip = 1. / (np.cos(np.deg2rad(cgm_lat)) ** 2.)
-
-    out_dict = {
-        'cgm_latitude': cgm_lat,
-        'cgm_longitude': cgm_lon,
-        'declination': decl,
-        'lshell': l_dip,
-        'mlt_midnight': mlt[0],
-        'mlt_ut': mlt_ut[0]
-    }
-
-    return out_dict
+    return cut_date, cutF

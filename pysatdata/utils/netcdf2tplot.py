@@ -3,7 +3,6 @@ from pytplot import tplot, store_data
 import pytplot
 import calendar
 
-
 def change_time_to_unix_time(time_var):
     from netCDF4 import num2date
     # A function that takes a variable with units of 'seconds/minutes/hours/etc. since YYYY-MM-DD:HH:MM:SS/etc

@@ -3,10 +3,11 @@ from pysatdata.utils.download import download
 from pysatdata.satellites.read_goes import *
 from pysatdata.satellites.read_rbsp import *
 from pathlib import Path
-import glob
-import logging
-
+from loguru import logger as logging
+import os
 # %%
+
+
 
 def load_sat(trange: list=['2013-11-5', '2013-11-6'],
              satellite: str='goes',
@@ -31,6 +32,13 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
 
 
     global remote_path, out_files, pathformat, tvars
+
+    # override local data directory with environment variables
+    if os.environ.get('SPEDAS_DATA_DIR'):
+        config_file[satellite]['local_data_dir'] = os.sep.join([os.environ['SPEDAS_DATA_DIR'], f'{satellite}'])
+
+    if os.environ.get(f'{satellite.upper()}_DATA_DIR'):
+        config_file[satellite]['local_data_dir'] = os.environ[f'{satellite.upper()}_DATA_DIR']
 
     local_path = str(Path.home().joinpath(config_file[satellite]['local_data_dir'], satellite))
     logging.info(f'Local Download Path: {local_path}')
