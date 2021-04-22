@@ -68,7 +68,7 @@ def download_file(url=None, filename=None, headers={}, username=None, password=N
         del headers['If-Modified-Since']
 
     # the file hasn't changed
-    if fsrc.status_code == 304:
+    if fsrc.status_code == 304 or os.path.isfile(filename) == True:
         logging.info('File is current: ' + filename)
         fsrc.close()
         return filename
