@@ -45,6 +45,8 @@ def plot_classicFluxSWparams(**kwargs):
     ax = plt.axes([0.055, 0.79, 0.817, 0.18])
     plt.subplots_adjust(left=0.06, right=0.875, bottom=0.07, top=0.95)
     lc = ax.pcolormesh(xax, yax, maskflux, norm=colors.LogNorm(vmin=0.2, vmax = 5e5), cmap='viridis')
+    ax.text(0.05, 0.9, '(a)', horizontalalignment='center',verticalalignment='center',
+            fontsize=18, transform=ax.transAxes)
     ax.set_title(titlePanel1)
     ax.set_ylabel('L-Star')
     # ax.set_xlabel('Time (UTC)', fontsize=15)
@@ -67,6 +69,8 @@ def plot_classicFluxSWparams(**kwargs):
         bx.semilogy(cut_date, cutF,  '-*', color=cor[il], label="{:1.1f} MeV".format(specEnergy[il]) )
         bx.legend(loc='upper right', bbox_to_anchor=(1.15, 1.02))
     bx.set_xlim(xLim[0], xLim[1])
+    bx.text(0.05, 0.9, '(b)', horizontalalignment='center', verticalalignment='center',
+            fontsize=18, transform=bx.transAxes)
     bx.tick_params(direction='in', length=10, width=0.7, colors='k',
                    grid_color='k', grid_alpha=0.5, which='major')
     bx.tick_params(direction='in', length=7, width=0.7, colors='k',
@@ -83,6 +87,8 @@ def plot_classicFluxSWparams(**kwargs):
     cx.plot(time_dt_swe, flow_speed, '-', color='b', label="Vsw")
     cx.get_xaxis().set_ticks_position('both')
     cx.get_yaxis().set_ticks_position('both')
+    cx.text(0.05, 0.9, '(c)', horizontalalignment='center', verticalalignment='center',
+            fontsize=18, transform=cx.transAxes)
     cx.legend(loc='upper right', bbox_to_anchor=(1.12, 1.02))
     cx.set_ylabel('$\\# / [Km s^{-1}]$')
     cx.set_xticklabels([])
@@ -98,6 +104,8 @@ def plot_classicFluxSWparams(**kwargs):
     dx.plot(time_dt_swe, nP, '-', color='b', label="Np")
     dx.get_xaxis().set_ticks_position('both')
     dx.get_yaxis().set_ticks_position('both')
+    dx.text(0.05, 0.9, '(d)', horizontalalignment='center', verticalalignment='center',
+            fontsize=18, transform=dx.transAxes)
     dx.legend(loc='upper right', bbox_to_anchor=(1.11, 1.02))
     dx.set_ylabel('$\\# / [cm^{-3}]$')
     dx.tick_params(direction='in', length=10, width=0.7, colors='k',
@@ -115,6 +123,8 @@ def plot_classicFluxSWparams(**kwargs):
     ex.plot(time_dt_swe, bgse_y, '-', color='r', label="By_gse")
     ex.get_xaxis().set_ticks_position('both')
     ex.get_yaxis().set_ticks_position('both')
+    ex.text(0.05, 0.9, '(e)', horizontalalignment='center', verticalalignment='center',
+            fontsize=18, transform=ex.transAxes)
     ex.legend(loc='upper right', bbox_to_anchor=(1.14, 1.02))
     ex.set_ylabel('$\\# / [nT]$')
     ex.tick_params(direction='in', length=10, width=0.7, colors='k',
@@ -131,6 +141,8 @@ def plot_classicFluxSWparams(**kwargs):
     fx.plot(time_dt_swe, b_total, '-', color='r', label="B total")
     fx.get_xaxis().set_ticks_position('both')
     fx.get_yaxis().set_ticks_position('both')
+    fx.text(0.05, 0.9, '(f)', horizontalalignment='center', verticalalignment='center',
+            fontsize=18, transform=fx.transAxes)
     fx.legend(loc='upper right', bbox_to_anchor=(1.14, 1.02))
     fx.set_ylabel('$\\# / [nT]$')
     fx.tick_params(direction='in', length=10, width=0.7, colors='k',
@@ -147,6 +159,8 @@ def plot_classicFluxSWparams(**kwargs):
     gx.plot(time_dt_swe, ae_index, '-', color='b', label="AE Index")
     gx.get_xaxis().set_ticks_position('both')
     gx.get_yaxis().set_ticks_position('both')
+    gx.text(0.05, 0.9, '(g)', horizontalalignment='center', verticalalignment='center',
+            fontsize=18, transform=gx.transAxes)
     gx.legend(loc='upper right', bbox_to_anchor=(1.145, 1.02))
     gx.set_ylabel('$\\# / [nT]$')
     gx.tick_params(direction='in', length=10, width=0.7, colors='k',

@@ -14,7 +14,7 @@ trange=['2016-03-05', '2016-03-11']
 
 #%%
 varss_rept = load_sat(trange=trange, satellite='rbsp',
-                     probe=['a'], level='l2', rel='rel03',
+                     probe=['a'], level='l3', rel='rel03',
                      instrument='rept',datatype='h2',
                      config_file=config_file_sat, downloadonly=False,
                      usePandas=False, usePyTplot=True)
@@ -58,6 +58,7 @@ fluxEnergyChanel = 1
 xax, yax, maskflux = interpolateFluxRbsp(flux_rept_spec[:,fluxEnergyChanel], l_rept, time_dt_rept)
 cutLshell = 5.
 energyRange = range(0,4)
+
 plotFluxParamsDict = {
                       'specEnergy': spec,
                       'time_dt_rept': time_dt_rept,
