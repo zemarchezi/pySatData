@@ -66,8 +66,18 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
             remote_path = config_file[satellite]['remote_data_dir']
             logging.info(f'Remotepath: {remote_path}')
             if instrument == 'emfisis':
-                subpathformat = f"rbsp{prb}/{level}/{instrument}/{datatype}/{cadence}/{coord}/%Y/"
-                pathformat = f"{subpathformat}rbsp-{prb}_{datatype}_{cadence}-{coord}_{instrument}-{level}_%Y%m%d_v*.cdf"
+                if datatype == 'wna-survey' or datatype == 'density':
+                    subpathformat = f"rbsp{prb}/{level}/{instrument}/{datatype}/%Y/"
+                    pathformat = f"{subpathformat}rbsp-{prb}_{datatype}_{instrument}-{level}_%Y%m%d_v*.cdf"
+                elif datatype == 'density':
+                    subpathformat = f"rbsp{prb}/{level}/{instrument}/{datatype}/%Y/"
+                    pathformat = f"{subpathformat}rbsp-{prb}_{datatype}_{instrument}-{level}_%Y%m%d_v*.cdf"
+                elif datatype == 'wfr':
+                    subpathformat = f"rbsp{prb}/{level}/{instrument}/{datatype}/{cadence}/%Y/"
+                    pathformat = f"{subpathformat}rbsp-{prb}_{datatype}-{cadence}_{instrument}-{level}_%Y%m%d_v*.cdf"
+                else:
+                    subpathformat = f"rbsp{prb}/{level}/{instrument}/{datatype}/{cadence}/{coord}/%Y/"
+                    pathformat = f"{subpathformat}rbsp-{prb}_{datatype}_{cadence}-{coord}_{instrument}-{level}_%Y%m%d_v*.cdf"
             elif instrument == 'rbspice':
                 subpathformat = f"rbsp{prb}/{level}/{instrument}/{datatype}/%Y/"
                 pathformat = f"{subpathformat}rbsp-{prb}-{instrument}_lev-{str(level)[-1]}_{datatype}_%Y%m%d_v*.cdf"
