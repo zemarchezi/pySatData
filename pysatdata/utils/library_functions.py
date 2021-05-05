@@ -181,3 +181,24 @@ def cutFlux_lshell(enSignal,lValue, EnChanel, lArray, timeArray):
             cut_date.append(timeArray[i])
 
     return cut_date, cutF
+
+def calc_fce(bMagnitude):
+
+    q_e = 1.60217653e-19
+    m_e = 9.1094e-31 #electron's rest mass (kg)
+    wce = q_e*(bMagnitude*1e-9)/m_e #Electron cyclotron frequency (rad/s)
+    fce_calc = wce/(2*np.pi) #Electron cyclotron frequency (Hz)
+    return fce_calc
+
+
+def cutFlux_lshell2(enSignal, lvalue):
+    cutF = enSignal.copy()
+    l = float(lvalue)
+    mask = (cutF['L'] < l-0.01)
+    cutF[mask] = np.nan
+    mask = (cutF['L'] > l + 0.01)
+    cutF[mask] = np.nan
+
+    cutF[cutF < 1e-10] = np.nan
+
+    return cutF.interpolate('linear')
