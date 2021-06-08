@@ -8,8 +8,6 @@ from loguru import logger as logging
 import os
 # %%
 
-
-
 def load_sat(trange: list=['2013-11-5', '2013-11-6'],
              satellite: str='goes',
              probe: list=[],
