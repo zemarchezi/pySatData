@@ -5,6 +5,8 @@ from pysatdata.satellites.read_rbsp import *
 from pysatdata.satellites.read_ace import *
 from pathlib import Path
 from loguru import logger as logging
+import urllib3
+from urllib3 import PoolManager
 import os
 # %%
 
@@ -43,12 +45,53 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
     local_path = str(Path.home().joinpath(config_file[satellite]['local_data_dir'], satellite))
     logging.info(f'Local Download Path: {local_path}')
 
+    # test remote Path
+    pool = PoolManager()
+    configSatKeys = list(config_file[satellite].keys())
+    rem_dirs = [i for i in configSatKeys if "remote_data_dir" in i]
+    logging.info("Testing Connection")
+    try:
+        remote_key = rem_dirs[0]
+        remote_path = config_file[satellite][remote_key]
+        responseSubpath = pool.request("GET", remote_path, preload_content=False,
+                                       timeout=urllib3.Timeout(connect=1.0, read=2.0))
+        logging.warning(f"Using {config_file[satellite][remote_key]}...")
+    except (Exception) as e:
+        # logger.error(e.args)
+        remote_key = rem_dirs[1]
+        logging.error(f"Directory {config_file[satellite][rem_dirs[0]]} is not available...")
+        logging.info(f"testing {config_file[satellite][remote_key]}...")
+        remote_path = config_file[satellite][remote_key]
+        responseSubpath = pool.request("GET", remote_path, preload_content=False,
+                                       timeout=urllib3.Timeout(connect=1.0, read=2.0))
+        logging.warning(f"Using {config_file[satellite][remote_key]}...")
+    except (Exception) as e:
+        logging.error(e)
+        logging.warning(f"There are no repository available")
+        raise
+
+    logging.info(f'Remotepath: {remote_path}')
+
     for prb in probe:
-        remote_path = config_file[satellite]['remote_data_dir']
-        logging.info(f'Remotepath: {remote_path}')
-        subpathformat = config_file[satellite]['remote_subpath'][str(prb)][instrument][datatype]['subpath']
+        logging.warning("Selecting the sub path key")
+        tempKey = list(config_file[satellite]['remote_subpath'][str(prb)][instrument][datatype])
+        subpathKeys = [i for i in tempKey if "subpath" in i]
+        filenameKeys = [i for i in tempKey if "filename" in i]
+        if remote_key == rem_dirs[1]:
+            subpathKey = subpathKeys[1]
+            filenameKey = filenameKeys[1]
+            if instrument in['rept', 'mageis'] and level=='3':
+                datatype='pitchangle'
+        elif remote_key == rem_dirs[0]:
+            subpathKey = subpathKeys[0]
+            filenameKey = filenameKeys[0]
+        else:
+            subpathKey = 'subpath'
+            filenameKey = 'filename'
+
+        subpathformat = config_file[satellite]['remote_subpath'][str(prb)][instrument][datatype][subpathKey]
         subpathformat = eval(f"f'{subpathformat}'")
-        sat_filename = config_file[satellite]['remote_subpath'][str(prb)][instrument][datatype]['filename']
+        sat_filename = config_file[satellite]['remote_subpath'][str(prb)][instrument][datatype][filenameKey]
         sat_filename = eval(f"f'{sat_filename}'")
         pathformat = f"{subpathformat}{sat_filename}"
         logging.info(f'Remote_file_path: {pathformat}')

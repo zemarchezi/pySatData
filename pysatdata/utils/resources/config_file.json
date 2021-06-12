@@ -57,6 +57,7 @@
    "rbsp":{
       "local_data_dir":"sat_data/",
       "remote_data_dir":"https://spdf.gsfc.nasa.gov/pub/data/rbsp/",
+      "remote_data_dir_ect": "https://www.rbsp-ect.lanl.gov/data_pub/",
       "remote_subpath":{
          "a":{
             "emfisis":{
@@ -107,32 +108,56 @@
             },
             "mageis":{
                "sectors":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-mageis-{level}_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-mageis-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-mageis-L{level}_%Y%m%d_v*.cdf"
+               },
+               "pitchangle":{
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-mageis-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-mageis-L{level}_%Y%m%d_v*.cdf"
                }
             },
             "rept":{
                "sectors":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-rept-sci-{level}_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-rept-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-rept-sci-L{level}_%Y%m%d_v*.cdf"
+               },
+               "pitchangle":{
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-rept-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-rept-sci-L{level}_%Y%m%d_v*.cdf"
                }
             },
             "hope":{
                "sectors":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-{level}_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-hope-sci-L{level}_%Y%m%d_v*.cdf"
                },
                "moments":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-mom-{level}_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-hope-MOM-L{level}_%Y%m%d_v*.cdf"
                },
                "pitchangle":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-pa-{level}_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-hope-PA-L{level}_%Y%m%d_v*.cdf"
                },
                "spinaverage":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-{level}sa_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-hope-sci-L{level}SA_%Y%m%d_v*.cdf"
                }
             },
             "rps":{
@@ -195,32 +220,56 @@
             },
             "mageis":{
                "sectors":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-mageis-{level}_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-mageis-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-mageis-L{level}_%Y%m%d_v*.cdf"
+               },
+               "pitchangle":{
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-mageis-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-mageis-L{level}_%Y%m%d_v*.cdf"
                }
             },
             "rept":{
                "sectors":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-rept-sci-{level}_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-rept-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-rept-sci-L{level}_%Y%m%d_v*.cdf"
+               },
+               "pitchangle":{
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-rept-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-rept-sci-L{level}_%Y%m%d_v*.cdf"
                }
             },
             "hope":{
                "sectors":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-{level}_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-hope-sci-L{level}_%Y%m%d_v*.cdf"
                },
                "moments":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-mom-{level}_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-hope-MOM-L{level}_%Y%m%d_v*.cdf"
                },
                "pitchangle":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-pa-{level}_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-hope-PA-L{level}_%Y%m%d_v*.cdf"
                },
                "spinaverage":{
-                  "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-{level}sa_%Y%m%d_v*.cdf"
+                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath_ect":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename_ect":"rbsp{prb}_{rel}_ect-hope-sci-L{level}SA_%Y%m%d_v*.cdf"
                }
             },
             "rps":{

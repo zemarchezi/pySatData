@@ -108,7 +108,7 @@ def download_file(url=None, filename=None, headers={}, username=None, password=N
     ftmp.close()
 
     logging.info('Download complete: ' + filename)
-
+    os.remove(ftmp.name)
     return filename
 
 
