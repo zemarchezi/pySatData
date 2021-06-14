@@ -94,8 +94,11 @@ def download_file(url=None, filename=None, headers={}, username=None, password=N
 
     ftmp = NamedTemporaryFile(delete=False)
 
-    with open(ftmp.name, 'wb') as f:
-        copyfileobj(fsrc.raw, f)
+    try:
+        with open(ftmp.name, 'wb') as f:
+            copyfileobj(fsrc.raw, f)
+    except (Exception) as e:
+        logging.error(e)
 
     # make sure the directory exists
     if not os.path.exists(os.path.dirname(filename)) and os.path.dirname(filename) != '':

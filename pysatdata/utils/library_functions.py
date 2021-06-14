@@ -6,6 +6,8 @@ import matplotlib.dates as mdates
 import datetime
 import pandas as pd
 from loguru import logger as logging
+import urllib3
+from urllib3 import PoolManager
 
 def normD(a):
     norm = 0
@@ -204,3 +206,41 @@ def cutFlux_lshell2(enSignal, lvalue):
 
 
     return cutF.interpolate('linear')
+
+def testRemoteDir(config_file, satellite, prb, instrument, level, datatype):
+    pool = PoolManager()
+    logging.info("Testing Connection")
+    try:
+        remote_path = config_file[satellite]['remote_data_dir']
+        responseSubpath = pool.request("GET", remote_path, preload_content=False,
+                                       timeout=1)
+        responseSubpath.close()
+        logging.warning(f"Using {config_file[satellite]['remote_data_dir']}...")
+        changeRemoteDir = False
+    except (Exception) as e:
+        # logger.error(e.args)
+        logging.error(f"Directory {config_file[satellite]['remote_data_dir']} is not available...")
+        remote_path = config_file[satellite]['remote_subpath'][str(prb)][instrument]["secondRemoteDir"]
+        logging.info(f"testing {remote_path}...")
+
+        responseSubpath = pool.request("GET", remote_path, preload_content=False,
+                                       timeout=1)
+        responseSubpath.close()
+        logging.warning(f"Using {remote_path}...")
+        changeRemoteDir = True
+    except (Exception) as e:
+        logging.error(e)
+        logging.warning(f"There are no repository available")
+        changeRemoteDir = False
+        raise
+
+    if changeRemoteDir:
+        subpathKey = "altern_subpath"
+        filenameKey = "altern_filename"
+        if instrument in ['rept', 'mageis'] and level == '3':
+            datatype = 'pitchangle'
+    else:
+        subpathKey = 'subpath'
+        filenameKey = 'filename'
+
+    return remote_path, subpathKey, filenameKey, datatype
