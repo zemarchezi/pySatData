@@ -45,9 +45,9 @@ def plot_classicFluxSWparams(**kwargs):
     ax = plt.axes([0.055, 0.79, 0.817, 0.18])
     plt.subplots_adjust(left=0.06, right=0.875, bottom=0.07, top=0.95)
     if interpolatedFlux == True:
-        lc = ax.pcolormesh(xax, yax, maskflux, norm=colors.LogNorm(vmin=0.2, vmax = 5e5), cmap='jet')
+        lc = ax.pcolormesh(xax, yax, maskflux, norm=colors.LogNorm(vmin=vmin, vmax = vmax), cmap='jet')
     else:
-        lc = ax.scatter(time_dt_rept,l_probe, 8, flux_rept_spec[:,fluxEnergyChanel], norm=colors.LogNorm(vmin=0.2, vmax=5e5), cmap='jet')
+        lc = ax.scatter(time_dt_rept,l_probe, 8, flux_rept_spec[:,fluxEnergyChanel], norm=colors.LogNorm(vmin=vmin, vmax= vmax), cmap='jet')
     ax.text(0.05, 0.9, '(a)', horizontalalignment='center',verticalalignment='center',
             fontsize=18, transform=ax.transAxes)
     ax.set_title(titlePanel1)
