@@ -44,12 +44,14 @@ def plot_classicFluxSWparams(**kwargs):
 
     ax = plt.axes([0.055, 0.79, 0.817, 0.18])
     plt.subplots_adjust(left=0.06, right=0.875, bottom=0.07, top=0.95)
-    # lc = ax.pcolormesh(xax, yax, maskflux, norm=colors.LogNorm(vmin=0.2, vmax = 5e5), cmap='jet')
-    lc = ax.scatter(time_dt_rept,l_probe, 8, flux_rept_spec[:,fluxEnergyChanel], norm=colors.LogNorm(vmin=0.2, vmax=5e5), cmap='jet')
+    if interpolatedFlux == True:
+        lc = ax.pcolormesh(xax, yax, maskflux, norm=colors.LogNorm(vmin=0.2, vmax = 5e5), cmap='jet')
+    else:
+        lc = ax.scatter(time_dt_rept,l_probe, 8, flux_rept_spec[:,fluxEnergyChanel], norm=colors.LogNorm(vmin=0.2, vmax=5e5), cmap='jet')
     ax.text(0.05, 0.9, '(a)', horizontalalignment='center',verticalalignment='center',
             fontsize=18, transform=ax.transAxes)
     ax.set_title(titlePanel1)
-    ax.set_ylabel('L-Star')
+    ax.set_ylabel(f'{lshellOrlStar}')
     # ax.set_xlabel('Time (UTC)', fontsize=15)
     ax.set_xlim(xLim[0], xLim[1])
     ax.set_xticklabels([])
@@ -79,19 +81,19 @@ def plot_classicFluxSWparams(**kwargs):
     bx.get_xaxis().set_ticks_position('both')
     bx.get_yaxis().set_ticks_position('both')
     bx.set_xticklabels([])
-    bx.set_title(f'Cut in flux at $L^* = {cutLshell}$')
-    bx.set_ylabel('$\\# / [cm^{-2}s^{-1}sr^{-1}MeV^{-1}]$')
+    bx.set_title(f'Cut in flux at ${lshellOrlStar} = {cutLshell}$')
+    bx.set_ylabel('$Flux / [cm^{-2}s^{-1}sr^{-1}MeV^{-1}]$')
     bx.grid()
     #
     # # Flow Speed
     cx = plt.axes([0.055, 0.48, 0.817, 0.1])
-    cx.plot(time_dt_swe, flow_speed, '-', color='b', label="Vsw")
+    cx.plot(time_dt_swe, flow_speed, '-', color='b')
     cx.get_xaxis().set_ticks_position('both')
     cx.get_yaxis().set_ticks_position('both')
     cx.text(0.05, 0.9, '(c)', horizontalalignment='center', verticalalignment='center',
             fontsize=18, transform=cx.transAxes)
-    cx.legend(loc='upper right', bbox_to_anchor=(1.12, 1.02))
-    cx.set_ylabel('$\\# / [Km s^{-1}]$')
+    # cx.legend(loc='upper right', bbox_to_anchor=(1.12, 1.02))
+    cx.set_ylabel('$V_{sw} / [Km s^{-1}]$')
     cx.set_xticklabels([])
     cx.tick_params(direction='in', length=10, width=0.7, colors='k',
                    grid_color='k', grid_alpha=0.5, which='major')
@@ -102,13 +104,13 @@ def plot_classicFluxSWparams(**kwargs):
     #
     # ## density
     dx = plt.axes([0.055, 0.37, 0.817, 0.1])
-    dx.plot(time_dt_swe, nP, '-', color='b', label="Np")
+    dx.plot(time_dt_swe, nP, '-', color='b')
     dx.get_xaxis().set_ticks_position('both')
     dx.get_yaxis().set_ticks_position('both')
     dx.text(0.05, 0.9, '(d)', horizontalalignment='center', verticalalignment='center',
             fontsize=18, transform=dx.transAxes)
     dx.legend(loc='upper right', bbox_to_anchor=(1.11, 1.02))
-    dx.set_ylabel('$\\# / [cm^{-3}]$')
+    dx.set_ylabel('$Np / [cm^{-3}]$')
     dx.tick_params(direction='in', length=10, width=0.7, colors='k',
                    grid_color='k', grid_alpha=0.5, which='major')
     dx.tick_params(direction='in', length=7, width=0.7, colors='k',
@@ -127,7 +129,7 @@ def plot_classicFluxSWparams(**kwargs):
     ex.text(0.05, 0.9, '(e)', horizontalalignment='center', verticalalignment='center',
             fontsize=18, transform=ex.transAxes)
     ex.legend(loc='upper right', bbox_to_anchor=(1.14, 1.02))
-    ex.set_ylabel('$\\# / [nT]$')
+    ex.set_ylabel('$IMF / [nT]$')
     ex.tick_params(direction='in', length=10, width=0.7, colors='k',
                    grid_color='k', grid_alpha=0.5, which='major')
     ex.tick_params(direction='in', length=7, width=0.7, colors='k',
@@ -145,7 +147,7 @@ def plot_classicFluxSWparams(**kwargs):
     fx.text(0.05, 0.9, '(f)', horizontalalignment='center', verticalalignment='center',
             fontsize=18, transform=fx.transAxes)
     fx.legend(loc='upper right', bbox_to_anchor=(1.14, 1.02))
-    fx.set_ylabel('$\\# / [nT]$')
+    fx.set_ylabel('$IMF / [nT]$')
     fx.tick_params(direction='in', length=10, width=0.7, colors='k',
                    grid_color='k', grid_alpha=0.5, which='major')
     fx.tick_params(direction='in', length=7, width=0.7, colors='k',
@@ -163,7 +165,7 @@ def plot_classicFluxSWparams(**kwargs):
     gx.text(0.05, 0.9, '(g)', horizontalalignment='center', verticalalignment='center',
             fontsize=18, transform=gx.transAxes)
     gx.legend(loc='upper right', bbox_to_anchor=(1.145, 1.02))
-    gx.set_ylabel('$\\# / [nT]$')
+    gx.set_ylabel('$/ [nT]$')
     gx.tick_params(direction='in', length=10, width=0.7, colors='k',
                    grid_color='k', grid_alpha=0.5, which='major')
     gx.tick_params(direction='in', length=7, width=0.7, colors='k',

@@ -346,20 +346,17 @@ def cdf_to_tplot(filenames, varformat=None, get_support_data=False,
                     yy = output_table[var_name]['y']
                     vv = output_table[var_name]['v']
                     # output_table[var_name]['v'] = yy
-                    aas = np.zeros((len(yy), 65))
-                    for i in range(len(yy)):
-                        aas[i,:] = vv[0,:]
-                    output_table[var_name]['v'] = aas
-            # # #
-            # print("Aquii")
-            # print(output_table[var_name])
-            # # output_table[var_name]['v'] = output_table[var_name]['y']
-            # print(output_table[var_name]['v'].shape)
-            # print(output_table[var_name]['x'].shape)
-            # print(output_table[var_name]['y'].shape)
-            # print("v", len(output_table[var_name]['v']))
-            # print("x", len(output_table[var_name]['x']))
-            # print("y", len(output_table[var_name]['y']))
+                    if len(vv.shape) > 1:
+                        aas = np.zeros((len(yy), vv.shape[1]))
+                        for i in range(len(yy)):
+                            aas[i,:] = vv[0,:]
+                        output_table[var_name]['v'] = aas
+                    else:
+                        aas = np.zeros((len(yy), len(vv)))
+                        for i in range(len(yy)):
+                            aas[i,:] = vv
+                        output_table[var_name]['v'] = aas
+
             store_data(var_name, data=output_table[var_name], attr_dict=attr_dict)
         except ValueError:
             continue
