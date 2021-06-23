@@ -16,9 +16,10 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
              instrument: str='magn',
              datatype: str='sectors',
              suffix: str='',
-             cadence='4sec', # for EMFISIS and ACE mag data
-             coord='sm', # for EMFISIS mag data
-             rel='rel04', # for ECT data
+             cadence: str='4sec', # for EMFISIS and ACE mag data
+             coord: str='sm', # for EMFISIS mag data
+             rel: str='rel04', # for ECT data
+             time: str='time', # For GOES satellites
              get_support_data: bool = False,
              varformat=None,
              varnames: list=[],
@@ -79,8 +80,9 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
     if downloadonly:
         return out_files
 
-    if satellite == 'goes':
-        tvars = readData_goes(out_files, usePyTplot, usePandas, suffix, time='time')
+    if satellite in ['goes16_17', 'goes13_15']:
+
+        tvars = readData_goes(out_files, usePyTplot, usePandas, suffix, time)
 
     if satellite == 'rbsp':
         tvars = readData_rbsp(out_files, usePyTplot, usePandas, suffix, get_support_data,
