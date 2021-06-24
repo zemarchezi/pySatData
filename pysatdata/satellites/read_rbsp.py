@@ -1,4 +1,3 @@
-# from pytplot import cdf_to_tplot
 from pysatdata.utils.cdf_to_tplot import *
 
 def readData_rbsp(files, usePyTplot, usePandas,
