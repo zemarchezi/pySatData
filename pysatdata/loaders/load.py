@@ -4,6 +4,7 @@ from pysatdata.utils.download import download
 from pysatdata.satellites.read_goes import *
 from pysatdata.satellites.read_rbsp import *
 from pysatdata.satellites.read_ace import *
+from pysatdata.satellites.read_themis import *
 from pathlib import Path
 from loguru import logger as logging
 import os
@@ -89,6 +90,9 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
                               varformat, varnames, notplot)
     if satellite in ['ace', 'omni']:
         tvars = readData_ace(out_files, usePyTplot, usePandas, suffix, get_support_data,
+                              varformat, varnames, notplot)
+    if satellite == 'themis':
+        tvars = readData_themis(out_files, usePyTplot, usePandas, suffix, get_support_data,
                               varformat, varnames, notplot)
     if time_clip:
         for new_var in tvars:
