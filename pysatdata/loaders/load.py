@@ -1,6 +1,7 @@
 from pysatdata.utils.dailynames import dailynames
 from pysatdata.utils.library_functions import testRemoteDir
 from pysatdata.utils.download import download
+from pysatdata.resources.config import openConfigFile
 from pysatdata.satellites.read_goes import *
 from pysatdata.satellites.read_rbsp import *
 from pysatdata.satellites.read_ace import *
@@ -30,11 +31,12 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
              time_clip: bool=False,
              usePandas: bool = True,
              usePyTplot: bool = False,
-             config_file: dict = {}):
+             config_file: str = './pysatdata/resources/config_file.json'):
 
 
     global remote_path, out_files, pathformat, tvars
 
+    config_file = openConfigFile(path=config_file).config_file_sat
     # set the download data directories
     if os.environ.get('DATA_DIR'):
         config_file[satellite]['local_data_dir'] = os.sep.join([os.environ['DATA_DIR'], f'{satellite}'])
