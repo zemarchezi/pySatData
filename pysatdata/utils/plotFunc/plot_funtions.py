@@ -38,8 +38,12 @@ def plot_classicFluxSWparams(**kwargs):
 
     titlePanel1 = f'RBSP {probe}: ECT/REPT (L{level}) Electron Flux density, Energy {energChanel} MeV{om}'
 
-    figureFilename = f'RBSP{probe}_ECT-REPT_L{level}_Electron-Flux-density-Energy_{energChanel}' \
-                     f'_MeV{trangeXlim[0]}_{trangeXlim[1]}.png'
+    if figureIdentify != None:
+        figureFilename = f'{figureIdentify}_RBSP{probe}_ECT-REPT_L{level}_Electron-Flux-density-Energy_{energChanel}' \
+                         f'_MeV{trangeXlim[0]}_{trangeXlim[1]}.png'
+    else:
+        figureFilename = f'RBSP{probe}_ECT-REPT_L{level}_Electron-Flux-density-Energy_{energChanel}' \
+                         f'_MeV{trangeXlim[0]}_{trangeXlim[1]}.png'
 
 
     ax = plt.axes([0.055, 0.79, 0.817, 0.18])
