@@ -105,8 +105,8 @@
                   "altern_filename":"rbsp{prb}_{instrument}-l{level}_{datatype}_%Y%m%d_v*.cdf"
                },
                "e-spinfit-mgse":{
-                  "subpath":"rbsp{prb}/l{level}/{instrument}/%Y/",
-                  "filename":"rbsp{prb}_{instrument}-l{level}_%Y%m%d_v*.cdf",
+                  "subpath":"rbsp{prb}/l{level}/{instrument}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{instrument}-l{level}_{datatype}_%Y%m%d_v*.cdf",
                   "altern_subpath":"rbsp{prb}/l{level}/%Y/",
                   "altern_filename":"rbsp{prb}_{instrument}-l{level}_%Y%m%d_v*.cdf"
                },
@@ -117,8 +117,8 @@
                   "altern_filename":"rbsp{prb}_{instrument}-l{level}_{datatype}_%Y%m%d_v*.cdf"
                },
                "esvy_despun":{
-                  "subpath":"rbsp{prb}/l{level}/{instrument}/%Y/",
-                  "filename":"rbsp{prb}_{instrument}-l{level}_%Y%m%d_v*.cdf",
+                  "subpath":"rbsp{prb}/l{level}/{instrument}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{instrument}-l{level}_{datatype}_%Y%m%d_v*.cdf",
                   "altern_subpath":"rbsp{prb}/l{level}/{datatype}/%Y/",
                   "altern_filename":"rbsp{prb}_{instrument}-l{level}_{datatype}_%Y%m%d_v*.cdf"
                },
