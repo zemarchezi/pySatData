@@ -102,8 +102,9 @@ def rotate_field_fac(x, y, z, bx, by, bz, ex, ey, ez):
     #        tempFields['b_fac'][i] = np.linalg.norm([tempFields['bp'][i], tempFields['ba'][i], tempFields['br'][i]])
     #        tempFields['b_orig'][i] = np.linalg.norm([bx[i], by[i], bz[i]])
 
-    return (pd.DataFrame(np.transpose([tempB[:, 0], tempB[:, 1], tempB[:, 2], tempE[:, 0], tempE[:, 1], tempE[:, 2]]),
-                         columns=['bp', 'ba', 'br', 'ep', 'ea', 'er']))
+    temp_data = [tempB[:, 0], tempB[:, 1], tempB[:, 2], tempE[:, 0], tempE[:, 1], tempE[:, 2], x, y, z]
+    return (pd.DataFrame(np.transpose(temp_data),
+                         columns=['bp', 'ba', 'br', 'ep', 'ea', 'er','x', 'y', 'z']))
 
 
 def l_dipole(cgm_lat):

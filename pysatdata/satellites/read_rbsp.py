@@ -18,7 +18,7 @@ def readData_rbsp(files, usePyTplot, usePandas,
         components = ["x", "y", "z"]
         out_dict = {}
         for vas in tvars:
-            print(vas)
+            # print(vas)
             temp_var = pytplot.data_quants[vas].values
             if len(temp_var.shape) > 1:
                 for i, c in enumerate(components):
