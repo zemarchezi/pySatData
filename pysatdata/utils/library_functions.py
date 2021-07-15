@@ -67,7 +67,16 @@ def format_func(value, tick_number):
 
     return ('{:02d}:{:02d} UTC \n {:04d}/{:02d}/{:02d}'.format(hora.hour, hora.minute, hora.year, hora.month, hora.day))
 
+def calcExEFW(efield, bfield):
+    ey = efield[:,1]
+    ez = efield[:,2]
+    bx = bfield[:,0]
+    by = bfield[:,1]
+    bz = bfield[:,2]
 
+    ex = -((ey*by) + (ez*bz))/(bx)
+
+    return ex
 #%%
 # convert the coordinate system from gse to field aligned system
 def rotate_field_fac(x, y, z, bx, by, bz, ex, ey, ez):
@@ -76,16 +85,6 @@ def rotate_field_fac(x, y, z, bx, by, bz, ex, ey, ez):
 
     data: pandas dataframe with the columns: 'x', 'y', 'ex', 'ey', 'ez', 'bx', 'by', 'bz'
     '''
-    x = x.values
-    y = y.values
-    z = z.values
-    v1x = np.transpose(ex)
-    v1y = ey
-    v1z = ez
-    bx = bx.values
-    by = by.values
-    bz = bz.values
-
     # v1p = v1a = v1r = bp = ba = br = r =  b_fac = b_orig = np.zeros((len(x)))
     tempB = np.zeros((len(x), 3))
     tempE = np.zeros((len(x), 3))
@@ -98,13 +97,14 @@ def rotate_field_fac(x, y, z, bx, by, bz, ex, ey, ez):
         # apply rotation for B
         tempB[i, :] = np.dot(Jac, ([bx[i], by[i], bz[i]]))
         # Apply the rotation for vector V1
-        tempE[i, :] = np.dot(Jac, ([v1x[i], v1y[i], v1z[i]]))
+        tempE[i, :] = np.dot(Jac, ([ex[i], ey[i], ez[i]]))
     #        # testing whether the rotation is correct
     #        tempFields['b_fac'][i] = np.linalg.norm([tempFields['bp'][i], tempFields['ba'][i], tempFields['br'][i]])
     #        tempFields['b_orig'][i] = np.linalg.norm([bx[i], by[i], bz[i]])
 
-    return (pd.DataFrame(np.transpose([tempB[:, 0], tempB[:, 1], tempB[:, 2], tempE[:, 0], tempE[:, 1], tempE[:, 2]]),
-                         columns=['bp', 'ba', 'br', 'v1p', 'v1a', 'v1r']))
+    temp_data = [tempB[:, 0], tempB[:, 1], tempB[:, 2], tempE[:, 0], tempE[:, 1], tempE[:, 2], x, y, z]
+    return (pd.DataFrame(np.transpose(temp_data),
+                         columns=['bp', 'ba', 'br', 'ep', 'ea', 'er','x', 'y', 'z']))
 
 
 def l_dipole(cgm_lat):
