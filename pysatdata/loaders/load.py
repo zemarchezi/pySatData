@@ -87,7 +87,7 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
 
         tvars = readData_goes(out_files, usePyTplot, usePandas, suffix, time)
 
-    if satellite == 'rbsp':
+    if satellite in ['rbsp', 'erg']:
         tvars = readData_rbsp(out_files, usePyTplot, usePandas, suffix, get_support_data,
                               varformat, varnames, notplot)
     if satellite in ['ace', 'omni']:
