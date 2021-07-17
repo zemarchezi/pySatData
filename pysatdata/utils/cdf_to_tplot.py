@@ -340,12 +340,19 @@ def cdf_to_tplot(filenames, varformat=None, get_support_data=False,
                 attr_dict["CDF"]["GATT"] = metadata[var_name]['global_attrs']
                 attr_dict["CDF"]["FILENAME"] = metadata[var_name]['file_name']
 
-
+            # extract the coordinate system, if available
+            # try:
+            #     vatt_keys = list(attr_dict["CDF"]["VATT"].keys())
+            #     vatt_lower = [k.lower() for k in vatt_keys]
+            #     if 'coordinate_system' in vatt_lower:
+            #         attr_dict['data_att'] = {'coord_sys': attr_dict["CDF"]["VATT"][vatt_keys[vatt_lower.index('coordinate_system')]]}
+            # except (Exception) as e:
+            #     print(e)
+            #
             if 'v' in list(output_table[var_name].keys()):
                 if len(output_table[var_name]['v']) != len(output_table[var_name]['x']):
                     yy = output_table[var_name]['y']
                     vv = output_table[var_name]['v']
-                    # output_table[var_name]['v'] = yy
                     if len(vv.shape) > 1:
                         aas = np.zeros((len(yy), vv.shape[1]))
                         for i in range(len(yy)):

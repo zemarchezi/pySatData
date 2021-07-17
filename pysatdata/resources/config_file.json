@@ -167,13 +167,13 @@
                "moments":{
                   "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
                   "altern_subpath":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-mom-l{level}_%Y%m%d_v*.cdf",
                   "altern_filename":"rbsp{prb}_{rel}_ect-hope-MOM-L{level}_%Y%m%d_v*.cdf"
                },
                "pitchangle":{
                   "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
                   "altern_subpath":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-pa-l{level}_%Y%m%d_v*.cdf",
                   "altern_filename":"rbsp{prb}_{rel}_ect-hope-PA-L{level}_%Y%m%d_v*.cdf"
                },
                "spinaverage":{
@@ -235,8 +235,8 @@
                   "altern_filename":"rbsp{prb}_{instrument}-l{level}_{datatype}_%Y%m%d_v*.cdf"
                },
                "e-spinfit-mgse":{
-                  "subpath":"rbsp{prb}/l{level}/{instrument}/%Y/",
-                  "filename":"rbsp{prb}_{instrument}-l{level}_%Y%m%d_v*.cdf",
+                  "subpath":"rbsp{prb}/l{level}/{instrument}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{instrument}-l{level}_{datatype}_%Y%m%d_v*.cdf",
                   "altern_subpath":"rbsp{prb}/l{level}/%Y/",
                   "altern_filename":"rbsp{prb}_{instrument}-l{level}_%Y%m%d_v*.cdf"
                },
@@ -247,8 +247,8 @@
                   "altern_filename":"rbsp{prb}_{instrument}-l{level}_{datatype}_%Y%m%d_v*.cdf"
                },
                "esvy_despun":{
-                  "subpath":"rbsp{prb}/l{level}/{instrument}/%Y/",
-                  "filename":"rbsp{prb}_{instrument}-l{level}_%Y%m%d_v*.cdf",
+                  "subpath":"rbsp{prb}/l{level}/{instrument}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{instrument}-l{level}_{datatype}_%Y%m%d_v*.cdf",
                   "altern_subpath":"rbsp{prb}/l{level}/{datatype}/%Y/",
                   "altern_filename":"rbsp{prb}_{instrument}-l{level}_{datatype}_%Y%m%d_v*.cdf"
                },
@@ -295,15 +295,15 @@
                   "altern_filename":"rbsp{prb}_{rel}_ect-hope-sci-L{level}_%Y%m%d_v*.cdf"
                },
                "moments":{
-                  "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
+                  "subpath" :"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
                   "altern_subpath":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-mom-l{level}_%Y%m%d_v*.cdf",
                   "altern_filename":"rbsp{prb}_{rel}_ect-hope-MOM-L{level}_%Y%m%d_v*.cdf"
                },
                "pitchangle":{
                   "subpath":"rbsp{prb}/l{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
                   "altern_subpath":"rbsp{prb}/{instrument}/level{level}/{datatype}/%Y/",
-                  "filename":"rbsp{prb}_{rel}_ect-hope-sci-l{level}_%Y%m%d_v*.cdf",
+                  "filename":"rbsp{prb}_{rel}_ect-hope-pa-l{level}_%Y%m%d_v*.cdf",
                   "altern_filename":"rbsp{prb}_{rel}_ect-hope-PA-L{level}_%Y%m%d_v*.cdf"
                },
                "spinaverage":{
@@ -463,6 +463,26 @@
                "sst":{
                   "subpath":"th{prb}/l{level}/{instrument}/%Y/",
                   "filename":"th{prb}_l{level}_{instrument}_%Y%m%d_v*.cdf"
+               }
+            }
+         }
+      }
+   },
+   "erg": {
+      "local_data_dir":"sat_data/",
+      "remote_data_dir":"https://cdaweb.gsfc.nasa.gov/pub/data/erg/",
+      "remote_subpath":{
+         "erg":{
+            "hep":{
+               "omniflux":{
+                  "subpath":"{instrument}/l{level}/{datatype}/%Y/",
+                  "filename":"{prb}_{instrument}_l{level}_{datatype}_%Y%m%d_v*.cdf"
+               }
+            },
+            "orb":{
+               "orb":{
+                  "subpath":"{instrument}/l{level}/%Y/",
+                  "filename":"{prb}_{instrument}_l{level}_%Y%m%d_v*.cdf"
                }
             }
          }
