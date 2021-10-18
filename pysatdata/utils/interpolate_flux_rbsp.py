@@ -5,7 +5,7 @@ from scipy import interpolate as interp
 from pysatdata.utils.library_functions import fill_nan
 
 
-def interpolateFluxRbsp(enSignal, lValues, timeArray):
+def interpolateFluxRbsp(enSignal, lValues, timeArray, resolution_L=0.025):
 
     L_inerp = fill_nan(lValues)
 
@@ -22,13 +22,13 @@ def interpolateFluxRbsp(enSignal, lValues, timeArray):
     p = np.matrix.transpose(np.asmatrix([time, L_inerp]))
     z = enSignal
 
-    xtime, xL = np.meshgrid(np.arange(min(time), max(time), 0.01), np.arange(min(L_inerp), max(L_inerp),0.025))
+    xtime, xL = np.meshgrid(np.arange(min(time), max(time), 0.01), np.arange(min(L_inerp), max(L_inerp),resolution_L))
 
     # datetime x array
     xax = [datetime.datetime(timeArray[0].year, 1, 1, 0, 0) + datetime.timedelta(t - 1) for t in xtime[0,:]]
 
     # creade Y axis array (L values)
-    yax = np.arange(min(L_inerp), max(L_inerp),0.025)
+    yax = np.arange(min(L_inerp), max(L_inerp),resolution_L)
 
     # interpolate the data indo the grid
     flux = interp.griddata(p, z, (xtime, xL), method='linear')
