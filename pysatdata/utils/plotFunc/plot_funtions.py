@@ -73,7 +73,7 @@ def plot_classicFluxSWparams(**kwargs):
     cor = cm.tab10(np.linspace(0, 1, len(energyRange)))
     for il in range(len(energyRange)):
         cut_date, cutF = cutFlux_lshell(flux_rept_spec, cutLshell, il, l_probe, time_dt_rept)
-        bx.semilogy(cut_date, cutF,  '-*', color=cor[il], label="{:1.1f} MeV".format(specEnergy[il]) )
+        bx.semilogy(cut_date, cutF,  '-*', color=cor[il], label="{:1.1f} MeV".format(specEnergy[energyRange[il]]) )
         bx.legend(loc='upper right', bbox_to_anchor=(1.15, 1.02))
     bx.set_xlim(xLim[0], xLim[1])
     bx.text(0.05, 0.9, '(b)', horizontalalignment='center', verticalalignment='center',
