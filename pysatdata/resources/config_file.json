@@ -18,6 +18,18 @@
                   "subpath":"goes{prb}/l{level}/data/{instrument}-l{level}-{datatype}/%Y/%m/",
                   "filename":"dn_{instrument}-l{level}-{datatype}_g{prb}_d%Y%m%d_*.nc"
                }
+            },
+            "euvs":{
+               "avg1m":{
+                  "subpath":"goes{prb}/l{level}/data/{instrument}-l{level}-{datatype}/%Y/%m/",
+                  "filename":"dn_{instrument}-l{level}-{datatype}_g{prb}_d%Y%m%d_*.nc"
+               }
+            },
+            "mpsh":{
+               "avg1m":{
+                  "subpath":"goes{prb}/l{level}/data/{instrument}-l{level}-{datatype}/%Y/%m/",
+                  "filename":"dn_{instrument}-l{level}-{datatype}_g{prb}_d%Y%m%d_*.nc"
+               }
             }
          }
       }
