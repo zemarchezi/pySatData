@@ -204,6 +204,11 @@
                   "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
                   "filename":"rbsp{prb}_{level}_psbr-rps_%Y%m%d_v*.cdf"
                }
+            },
+            "ephemeris":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub",
+               "definitive":{
+                  "subpath":"rbsp{prb}/{instrument}/ect-mag-ephem/hdf5/def-5min-ts04d/%Y/",
+                  "filename":"rbsp{prb}_def_MagEphem_TS04D_%Y%m%d_v*.h5"
             }
          },
          "b":{
@@ -334,6 +339,11 @@
                   "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
                   "filename":"rbsp{prb}_{level}_psbr-rps_%Y%m%d_v*.cdf"
                }
+            },
+            "ephemeris":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub",
+               "definitive":{
+                  "subpath":"rbsp{prb}/{instrument}/ect-mag-ephem/hdf5/def-5min-ts04d/%Y/",
+                  "filename":"rbsp{prb}_def_MagEphem_TS04D_%Y%m%d_v*.h5"
             }
          }
       }
