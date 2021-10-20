@@ -10,13 +10,13 @@ import gc
 from pysatdata.utils.library_functions import *
 #%%
 # dataT = pd.read_csv('/home/jose/python_projects/rbsp_flux_sw_sea/dataEpoch/NewallEpochs_HSS_corrected_2018.csv',
-#                     index_col=0)
+                    # index_col=0)
 #
 # for n, dd in enumerate(dataT.index):
 
-stringInstant = '2013-12-13'
+stringInstant = '2017-07-17'
 
-# stringInstant = dd.split(" ")[0]
+# stringInstant = dataT.index[0].split(" ")[0]
 instDate = datetime.datetime.strptime(stringInstant, '%Y-%m-%d')
 
 
@@ -97,7 +97,7 @@ energChanel = f'{spec_a[fluxEnergyChanel]}'
 
 plotFluxParamsDict = {'specEnergy': spec_a,
                       'time_dt_rept': [time_dt_rept_a, time_dt_rept_b],
-                      'l_probe': [l_rept_a, time_dt_rept_b],
+                      'l_probe': [l_rept_a, l_rept_b],
                       'cutLshell': cutLshell,
                       'energyRange': energyRange,
                       'trangeXlim': trange0,
@@ -158,18 +158,18 @@ def plot_FluxvsL(**kwargs):
                          f'_MeV{trangeXlim[0]}_{trangeXlim[1]}.png'
 
 
-    ax = plt.axes([0.055, 0.04, 0.817, 0.18])
+    ax = plt.axes([0.055, 0.04, 0.817, 0.88])
     plt.subplots_adjust(left=0.06, right=0.875, bottom=0.07, top=0.95)
     if interpolatedFlux == True:
         lc = ax.pcolormesh(xax, yax, maskflux, norm=colors.LogNorm(vmin=vmin, vmax = vmax), cmap='jet')
     else:
         for ff in range(len(fluxAB)):
             lc = ax.scatter(time_dt_rept[ff],l_probe[ff], 8, fluxAB[ff], norm=colors.LogNorm(vmin=vmin, vmax= vmax), cmap='jet')
-    ax.text(0.05, 0.9, '(a)', horizontalalignment='center',verticalalignment='center',
-            fontsize=18, transform=ax.transAxes)
+    # ax.text(0.05, 0.9, '(a)', horizontalalignment='center',verticalalignment='center',
+    #         fontsize=18, transform=ax.transAxes)
     ax.set_title(titlePanel1)
     ax.set_ylabel(f'{lshellOrlStar}')
-    # ax.set_xlabel('Time (UTC)', fontsize=15)
+    ax.set_xlabel('Time (UTC)', fontsize=15)
     ax.set_xlim(xLim[0], xLim[1])
     ax.set_xticklabels([])
     ax.xaxis.set_minor_locator(AutoMinorLocator())
@@ -185,3 +185,17 @@ def plot_FluxvsL(**kwargs):
     logging.info(f'saving figure at: {out_figDir}/{figureFilename}')
     plt.savefig(f'{out_figDir}/{figureFilename}')
 # %%
+
+
+ldfa = pd.DataFrame(l_rept_a, index=time_dt_rept_a, columns=['la'])
+ldfb = pd.DataFrame(l_rept_b, index=time_dt_rept_b, columns=['lb'])
+# %%
+lldf = pd.concat([ldfa, ldfb], axis=1)
+#%%
+
+lldf['la'].values[0] is True
+# %%
+x = np.linspace(0, 1, nx)
+y = np.linspace(0, 1, nx)
+
+xtime, xL = np.meshgrid(np.arange(min(time), max(time), 0.01), np.arange(min(L_inerp), max(L_inerp),resolution_L))
