@@ -10,6 +10,26 @@ import datetime
 # from plt_functions import *
 # rc('text', usetex=True)
 #%%
+
+def kValueCalc(angleRange, K_Vector, alpha_Vector):
+    j_k = K_Vector
+    k_alpha = alpha_Vector
+    y = np.zeros(len(j_k))
+    for k in range(len(j_k)):
+        y[k]=np.log10(j_k[k])
+    x = np.zeros(len(k_alpha))
+    for k in range(len(k_alpha)):
+        x[k]=k_alpha[k]
+    f = interp1d(x, y, kind='linear',fill_value='extrapolate')
+
+
+    calcK = list()
+    for i in angleRange:
+        calcK.append(10**f(i))
+
+    return (np.mean(calcK))
+
+
 class flux2PhSD():
     '''
     This class aims to convert electron flux measured by the Van Allen Probes 
