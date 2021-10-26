@@ -206,10 +206,11 @@
                }
             },
             "ephemeris":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub",
-               "definitive":{
-                  "subpath":"rbsp{prb}/{instrument}/ect-mag-ephem/hdf5/def-5min-ts04d/%Y/",
-                  "filename":"rbsp{prb}_def_MagEphem_TS04D_%Y%m%d_v*.h5"
-            }
+                "definitive":{
+                   "subpath":"rbsp{prb}/{instrument}/ect-mag-ephem/cdf/def-5min-ts04d/%Y/",
+                   "filename":"rbsp-{prb}_mag-ephem_def-5min-ts04d_%Y%m%d_v*.cdf"
+                }
+             }           
          },
          "b":{
             "emfisis":{"secondRemoteDir": "https://emfisis.physics.uiowa.edu/Flight/",
@@ -342,8 +343,9 @@
             },
             "ephemeris":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub",
                "definitive":{
-                  "subpath":"rbsp{prb}/{instrument}/ect-mag-ephem/hdf5/def-5min-ts04d/%Y/",
-                  "filename":"rbsp{prb}_def_MagEphem_TS04D_%Y%m%d_v*.h5"
+                  "subpath":"rbsp{prb}/{instrument}/ect-mag-ephem/cdf/def-5min-ts04d/%Y/",
+                  "filename":"rbsp-{prb}_mag-ephem_def-5min-ts04d_%Y%m%d_v*.cdf"
+               }
             }
          }
       }

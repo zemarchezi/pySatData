@@ -70,7 +70,7 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
 
         # find the full remote path names using the trange
         remote_names = dailynames(file_format=pathformat, trange=trange)
-
+        # print(remote_names)
         out_files = []
 
         files = download(remote_file=remote_names, remote_path=remote_path, local_path=local_path, no_download=no_update)
