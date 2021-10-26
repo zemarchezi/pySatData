@@ -62,7 +62,7 @@ class flux2PhSD():
 
     def __init__(self, alphaRange, Kd, MUd, epoch_eph, specbinMageis,
                  k_Ephem, lStar_eph, lShell_eph, alpha_eph,
-                 emfis_mag, pAngle_mageis, fedu_mageis, ylim, probe):
+                 emfis_mag, pAngle_mageis, fedu_mageis):
 
         self.Kvalues = k_Ephem
         self.Ls = lStar_eph
@@ -76,8 +76,7 @@ class flux2PhSD():
         self.alphaD = np.arange(alphaRange[0],alphaRange[1])
         self.Kd = Kd
         self.MUd = MUd
-        self.ylim = ylim
-        self.probe = probe
+        
 
 
 
@@ -238,7 +237,8 @@ class flux2PhSD():
                             #for mageis, jd does not need to be multiplied by 1e-3
 
     
-    def separateOrbits(self):
+    def separateOrbits(self, ylim):
+        self.ylim = ylim
         self.dfPsd = pd.DataFrame(self.psd,index=self.ttime)
         # disp(self.dfPsd)
         self.dfPsd['lStar'] = self.Ls_K
