@@ -318,3 +318,68 @@ def plot_classicSWparams(**kwargs):
 
     logging.info(f'saving figure at: {out_figDir}/{figureFilename}')
     plt.savefig(f'{out_figDir}/{figureFilename}')
+
+
+#%%
+
+def plot_FluxvsL(**kwargs):
+
+    for key, val in kwargs.items():
+        globals()[key] = val
+
+
+    out_figDir = str(Path.home().joinpath('Pictures', plotDir))
+
+    if not os.path.exists(out_figDir) and os.path.dirname(out_figDir) != '':
+        os.makedirs(out_figDir)
+
+    xLim=[datetime.datetime.strptime(trangeXlim[0], '%Y-%m-%d'), datetime.datetime.strptime(trangeXlim[1], '%Y-%m-%d')]
+
+    matplotlib.rc('font', size=fontsize)
+    plt.close('all')
+    plt.ioff()
+    figprops = dict(figsize=(16,4), dpi=120)
+    fig = plt.figure(**figprops)
+
+    energChanel = f'{specEnergy[fluxEnergyChanel]}'
+    if level == 2:
+        om = ' -- OMNI directional'
+    else:
+        om = ''
+
+    titlePanel1 = f'RBSP {probe}: ECT/REPT (L{level}) Electron Flux density, Energy {energChanel} MeV{om}'
+
+    if figureIdentify != None:
+        figureFilename = f'{figureIdentify}_RBSP{probe}_ECT-REPT_L{level}_Electron-Flux-density-Energy_{energChanel}' \
+                         f'_MeV{trangeXlim[0]}_{trangeXlim[1]}.png'
+    else:
+        figureFilename = f'RBSP{probe}_ECT-REPT_L{level}_Electron-Flux-density-Energy_{energChanel}' \
+                         f'_MeV{trangeXlim[0]}_{trangeXlim[1]}.png'
+
+
+    ax = plt.axes([0.055, 0.79, 0.817, 0.18])
+    plt.subplots_adjust(left=0.06, right=0.875, bottom=0.07, top=0.95)
+    if interpolatedFlux == True:
+        lc = ax.pcolormesh(xax, yax, maskflux, norm=colors.LogNorm(vmin=vmin, vmax = vmax), cmap='jet')
+    else:
+        for ff in fluxAB:
+            lc = ax.scatter(time_dt_rept,l_probe, 8, ff, norm=colors.LogNorm(vmin=vmin, vmax= vmax), cmap='jet')
+    ax.text(0.05, 0.9, '(a)', horizontalalignment='center',verticalalignment='center',
+            fontsize=18, transform=ax.transAxes)
+    ax.set_title(titlePanel1)
+    ax.set_ylabel(f'{lshellOrlStar}')
+    # ax.set_xlabel('Time (UTC)', fontsize=15)
+    ax.set_xlim(xLim[0], xLim[1])
+    ax.set_xticklabels([])
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.tick_params(direction='in', length=10, width=0.7, colors='k',
+                   grid_color='k', grid_alpha=0.5, which='major')
+    ax.tick_params(direction='in', length=7, width=0.7, colors='k',
+                   grid_color='k', grid_alpha=0.5, which='minor')
+    cbar_coord = replace_at_index1(make_axes_locatable(ax).get_position(), [0,2], [0.9, 0.01])
+    cbar_ax = fig.add_axes(cbar_coord)
+    cbar = fig.colorbar(lc, cax=cbar_ax)
+    cbar.set_label('$[cm^{-2}s^{-1}sr^{-1}MeV^{-1}]$')
+
+    logging.info(f'saving figure at: {out_figDir}/{figureFilename}')
+    plt.savefig(f'{out_figDir}/{figureFilename}')

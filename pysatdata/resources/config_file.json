@@ -204,7 +204,13 @@
                   "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
                   "filename":"rbsp{prb}_{level}_psbr-rps_%Y%m%d_v*.cdf"
                }
-            }
+            },
+            "ephemeris":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub",
+                "definitive":{
+                   "subpath":"rbsp{prb}/{instrument}/ect-mag-ephem/cdf/def-5min-ts04d/%Y/",
+                   "filename":"rbsp-{prb}_mag-ephem_def-5min-ts04d_%Y%m%d_v*.cdf"
+                }
+             }           
          },
          "b":{
             "emfisis":{"secondRemoteDir": "https://emfisis.physics.uiowa.edu/Flight/",
@@ -333,6 +339,12 @@
                "rps":{
                   "subpath":"rbsp{prb}/{level}/ect/{instrument}/{datatype}/{rel}/%Y/",
                   "filename":"rbsp{prb}_{level}_psbr-rps_%Y%m%d_v*.cdf"
+               }
+            },
+            "ephemeris":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub",
+               "definitive":{
+                  "subpath":"rbsp{prb}/{instrument}/ect-mag-ephem/cdf/def-5min-ts04d/%Y/",
+                  "filename":"rbsp-{prb}_mag-ephem_def-5min-ts04d_%Y%m%d_v*.cdf"
                }
             }
          }

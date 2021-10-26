@@ -12,6 +12,7 @@ __pycache__/
 tests.py
 tests2.py
 testes.py
+test*.py
 
 # Distribution / packaging
 .Python
