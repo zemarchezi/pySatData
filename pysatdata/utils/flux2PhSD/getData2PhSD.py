@@ -9,7 +9,7 @@ from pysatdata.utils.flux2PhSD.flux2PhSD import *
 
 #%%
 
-def getData2PhSD(trange, dictParams, probeList, alphaRange, Kd, MUd):
+def getData2PhSD(trange, dictParams, probeList, alphaRange, Kd, MUd, config_file_sat):
 
     psdL = list()
     epochL = list()
@@ -86,47 +86,3 @@ def getData2PhSD(trange, dictParams, probeList, alphaRange, Kd, MUd):
         epochL.append(fpd.Epo)
 
     return epochL, lstarL, psdL
-
-
-#%%
-dictParams = {"satellite": 'rbsp', 
-                "level": '3', 
-                "rel": {'ephem': "rel03",
-                        'emfisis': "rel03",
-                        'mageis': 'rel04'},
-                "instrument": {'ephem':'ephemeris',
-                               'emfisis': 'emfisis',
-                               'mageis': 'mageis'}, 
-                "datatype": {'ephem':'definitive',
-                               'emfisis': 'magnetometer',
-                               'mageis': 'sectors'}}
-
-stringInstant = '2014-12-21 19:11:00'
-#
-instDate = datetime.datetime.strptime(stringInstant.split(' ')[0], '%Y-%m-%d')
-
-
-inidate = instDate - datetime.timedelta(days = 1)
-enddate = instDate + datetime.timedelta(days = 2)
-trange0 = [inidate.strftime('%Y-%m-%d'), enddate.strftime('%Y-%m-%d')]
-trange= [(inidate - datetime.timedelta(days = 1)).strftime('%Y-%m-%d'),
-         (enddate + datetime.timedelta(days = 3)).strftime('%Y-%m-%d')]
-
-tt0 = datetime.datetime.strptime(stringInstant, '%Y-%m-%d %H:%M:%S') - datetime.timedelta(days = 1)
-tt1 = datetime.datetime.strptime(stringInstant, '%Y-%m-%d %H:%M:%S') + datetime.timedelta(days = 2)
-testMaxParametersIndex = [tt0, tt1]
-
-
-config_file_sat = '/home/jose/python_projects/pySatData/pysatdata/resources/config_file.json'
-
-alphaRange = [80,90]
-Kd = None
-alphaD = np.arange(alphaRange[0],alphaRange[1]) #desired value of pitch angle; change
-# Kd=.1 #desired value of K; change
-MUd=1500 #desired MU in MeV/G; change 
-
-probeList=['a', 'b']
-
-# %%
-testes =  getData2PhSD(trange, dictParams, probeList, alphaRange, Kd, MUd)
-# %%
