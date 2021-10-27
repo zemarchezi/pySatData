@@ -27,8 +27,12 @@ def kValueCalc(angleRange, K_Vector, alpha_Vector):
     for i in angleRange:
         calcK.append(10**f(i))
 
-    return (np.mean(calcK))
+    return np.nanmin(calcK)
 
+def find_nearest(array, value):
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return idx, array[idx]
 
 class flux2PhSD():
     '''
@@ -62,7 +66,7 @@ class flux2PhSD():
 
     def __init__(self, alphaRange, Kd, MUd, epoch_eph, specbinMageis,
                  k_Ephem, lStar_eph, lShell_eph, alpha_eph,
-                 emfis_mag, pAngle_mageis, fedu_mageis, ylim, probe):
+                 emfis_mag, pAngle_mageis, fedu_mageis):
 
         self.Kvalues = k_Ephem
         self.Ls = lStar_eph
@@ -76,8 +80,7 @@ class flux2PhSD():
         self.alphaD = np.arange(alphaRange[0],alphaRange[1])
         self.Kd = Kd
         self.MUd = MUd
-        self.ylim = ylim
-        self.probe = probe
+        
 
 
 
@@ -87,26 +90,20 @@ class flux2PhSD():
         self.mediaK = np.nanmean(self.Kvalues, axis=0)
 
         self.numbPoints, self.numbPoints_angle = self.Kvalues.shape #bins of time and PA
-        # numbPoints = 2000
-
-        # ttime = stats.binned_statistic(arange(len(ttime)),ttime, 'mean', bins=numbPoints)[0]#
-
-        # self.lvalue_list
-        #####
-        # data from van allen
 
         self.B2=stats.binned_statistic(np.arange(len(self.B)),self.B, 'mean', bins=self.numbPoints)[0]#
-
-
 
         if not self.Kd:
             self.Kd = kValueCalc(angleRange=self.alphaD,  K_Vector=self.mediaK, alpha_Vector=self.pae)
 
-        if not self.MUd:
-            self.MUd = muCalc()
+        # if not self.MUd:
+        #     self.MUd = muCalc()
 
+        # index for the L* correspondent to K value
+        index_forLs = find_nearest(self.mediaK, self.Kd)
 
-
+        self.Ls_forKd = self.Ls[:,index_forLs[0]]
+        
         a1,b1,c1=self.fedu_mageis.shape #ntime,npa,nE
         self.Enm=(self.specbinMageis)*1e-3 #mageis energy channels changed to MeV
         self.Enm=self.Enm[range(21)]#range of valid energy channels for mageis
@@ -147,7 +144,7 @@ class flux2PhSD():
                 K_temp2=K_temp[pa_st0:pa_end0]
                 pae2=self.pae[pa_st0:pa_end0]
                 
-                fK = interp1d(K_temp2,pae2) #linear fit, VALIDATED!!!
+                fK = interp1d(K_temp2,pae2) #linear fit
                 self.aK=fK(self.Kd) #Alpha for desired K at instant iit
                 #disp(aK) ok, no nan values generated for aK during interpolation
                 
@@ -238,7 +235,8 @@ class flux2PhSD():
                             #for mageis, jd does not need to be multiplied by 1e-3
 
     
-    def separateOrbits(self):
+    def separateOrbits(self, ylim):
+        self.ylim = ylim
         self.dfPsd = pd.DataFrame(self.psd,index=self.ttime)
         # disp(self.dfPsd)
         self.dfPsd['lStar'] = self.Ls_K
@@ -271,3 +269,5 @@ class flux2PhSD():
         return (self.phDenInB, self.phDenOuB)
 
 
+
+# %%
