@@ -178,6 +178,8 @@ class flux2PhSD():
                 p2=2*(.511/c**2)*(self.B2[iit]*1e-5)*self.MUd/(np.sin(np.radians(self.aK))**2) #relativistic momentum squared       
                 #B is converted from nT to Gauss        
                 delta=(2*.511)**2+(4*p2*c**2)
+                # print('delta', delta)
+                # print(p2)
                 #solving the second degree equation in respect to E to get the kinetic energy En_mu at desired MU and K         
                 E_mu=(-2*.511+np.sqrt(delta))/2 #VALIDATED!!!
                 self.E_mu_spec[iit]=E_mu        
