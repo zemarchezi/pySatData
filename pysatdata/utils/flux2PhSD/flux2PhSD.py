@@ -181,7 +181,7 @@ class flux2PhSD():
                 # print('delta', delta)
                 # print(p2)
                 #solving the second degree equation in respect to E to get the kinetic energy En_mu at desired MU and K         
-                E_mu=(-2*.511+np.sqrt(delta))/2 #VALIDATED!!!
+                E_mu=(-2*.511+np.sqrt(delta))/2 #
                 self.E_mu_spec[iit]=E_mu        
                 np.disp(E_mu)
                 if E_mu<np.nanmin(self.Enm) or E_mu>np.nanmax(self.Enm):
