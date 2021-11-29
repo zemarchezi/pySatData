@@ -14,19 +14,19 @@ from pysatdata.utils.library_functions import *
 #
 # for n, dd in enumerate(dataT.index):
 
-stringInstant = '2017-07-17'
+stringInstant = '2019-05-10'
 
 # stringInstant = dataT.index[0].split(" ")[0]
 instDate = datetime.datetime.strptime(stringInstant, '%Y-%m-%d')
 
 
-inidate = instDate - datetime.timedelta(days = 5)
-enddate = instDate + datetime.timedelta(days = 5)
+inidate = instDate - datetime.timedelta(days = 6)
+enddate = instDate + datetime.timedelta(days = 6)
 trange0 = [inidate.strftime('%Y-%m-%d'), enddate.strftime('%Y-%m-%d')]
 trange= [(inidate - datetime.timedelta(days = 1)).strftime('%Y-%m-%d'),
          (enddate + datetime.timedelta(days = 1)).strftime('%Y-%m-%d')]
 
-config_file_sat = './pysatdata/resources/config_file.json'
+config_file_sat = '/home/jose/python_projects/pySatData/pysatdata/resources/config_file.json'
 
 
 
@@ -62,7 +62,6 @@ time_dt_rept_a = [datetime.datetime.fromtimestamp(i, pytz.timezone("UTC")) for i
 spec_a = quants_fedu_rept_a.coords['spec_bins'].values
 v1_a = quants_fedu_rept_a.coords['v1'].values
 
-#%%
 pytplot.del_data()
 paramLoadSat_b = {"satellite": 'rbsp', "probe": 'b', "level": '3', "rel": "rel03",
                 "instrument": 'rept', "datatype": 'sectors'}
@@ -117,8 +116,7 @@ plotFluxParamsDict = {'specEnergy': spec_a,
                       'figureIdentify': f'AB_HSS'
                       }
 #%%
-plot_FluxvsL(**plotFluxParamsDict)
-gc.collect()
+
 
 #%%
 #%%
@@ -185,8 +183,10 @@ def plot_FluxvsL(**kwargs):
     logging.info(f'saving figure at: {out_figDir}/{figureFilename}')
     plt.savefig(f'{out_figDir}/{figureFilename}')
 # %%
+plot_FluxvsL(**plotFluxParamsDict)
+gc.collect()
 
-
+exit()
 ldfa = pd.DataFrame(l_rept_a, index=time_dt_rept_a, columns=['la'])
 ldfb = pd.DataFrame(l_rept_b, index=time_dt_rept_b, columns=['lb'])
 # %%
