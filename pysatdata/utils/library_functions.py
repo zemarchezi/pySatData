@@ -74,7 +74,13 @@ def calcExEFW(efield, bfield):
     by = bfield[:,1]
     bz = bfield[:,2]
 
-    ex = -((ey*by) + (ez*bz))/(bx)
+    ex = np.zeros((len(bx)))
+    for i in range(len(bx)):
+        angle = np.arctan(bx/(np.sqrt(by**2 + bz**2)))
+        if angle < 6.0:
+            ex[i] = np.nan
+        else:
+            ex[i] = -((ey[i]*by[i]) + (ez[i]*bz[i]))/(bx[i])
 
     return ex
 #%%
