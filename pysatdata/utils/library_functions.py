@@ -4,10 +4,13 @@ import numpy as np
 from numpy import pi, cos, sin, arctan2, sqrt, dot
 import matplotlib.dates as mdates
 import datetime
+import math
 import pandas as pd
 from loguru import logger as logging
 import urllib3
 from urllib3 import PoolManager
+import numba
+from numba import jit
 
 def normD(a):
     norm = 0
@@ -67,6 +70,7 @@ def format_func(value, tick_number):
 
     return ('{:02d}:{:02d} UTC \n {:04d}/{:02d}/{:02d}'.format(hora.hour, hora.minute, hora.year, hora.month, hora.day))
 
+@numba.jit(nopython=True, nogil=True)
 def calcExEFW(efield, bfield):
     ey = efield[:,1]
     ez = efield[:,2]
@@ -76,12 +80,12 @@ def calcExEFW(efield, bfield):
 
     ex = np.zeros((len(bx)))
     for i in range(len(bx)):
-        angle = np.arctan(bx/(np.sqrt(by**2 + bz**2)))
+        angle = math.degrees(math.atan(bx[i]/(math.sqrt(by[i]**2 + bz[i]**2))))
         if angle < 6.0:
             ex[i] = np.nan
         else:
             ex[i] = -((ey[i]*by[i]) + (ez[i]*bz[i]))/(bx[i])
-
+    
     return ex
 #%%
 # convert the coordinate system from gse to field aligned system
