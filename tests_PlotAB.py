@@ -14,7 +14,7 @@ from pysatdata.utils.library_functions import *
 #
 # for n, dd in enumerate(dataT.index):
 
-stringInstant = '2019-05-10'
+stringInstant = '2014-04-07'
 
 # stringInstant = dataT.index[0].split(" ")[0]
 instDate = datetime.datetime.strptime(stringInstant, '%Y-%m-%d')
@@ -186,6 +186,7 @@ def plot_FluxvsL(**kwargs):
 plot_FluxvsL(**plotFluxParamsDict)
 gc.collect()
 
+#%%
 exit()
 ldfa = pd.DataFrame(l_rept_a, index=time_dt_rept_a, columns=['la'])
 ldfb = pd.DataFrame(l_rept_b, index=time_dt_rept_b, columns=['lb'])
