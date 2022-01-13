@@ -26,7 +26,7 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     install_requires=['requests',  'pytplot',
                       'cdflib>=0.3.20', 'cdasws>=1.7.24', 'netCDF4',
-                      'pywavelets', 'pyqtgraph', 'astropy', 'loguru',
+                      'pywavelets', 'pyqtgraph==0.12.2', 'astropy', 'loguru',
                       'aacgmv2>=2.6.2', 'matplotlib', 'netCDF4',
                       'pandas', 'pycwt', 'pytz', 'scipy', 'tqdm',
                       'xarray','urllib3'],
