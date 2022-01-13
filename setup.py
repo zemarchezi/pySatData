@@ -24,7 +24,7 @@ setup(
                  ],
     keywords='satellite space data tools',
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
-    install_requires=['requests', 'pyqtgraph==0.12.2', 'pytplot',
+    install_requires=['requests',  'pytplot',
                       'cdflib>=0.3.20', 'cdasws>=1.7.24', 'netCDF4',
                       'pywavelets', 'pyqtgraph', 'astropy', 'loguru',
                       'aacgmv2>=2.6.2', 'matplotlib', 'netCDF4',
