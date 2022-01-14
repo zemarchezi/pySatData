@@ -163,7 +163,7 @@ def plot_classicFluxSWparams(**kwargs):
     #
     # ## AE index
     gx = plt.axes([0.055, 0.04, 0.817, 0.1])
-    gx.plot(time_dt_swe, ae_index, '-', color='b', label="AE Index")
+    gx.plot(time_dt_swe, bgse_z, '-', color='b', label="AE Index")
     gx.get_xaxis().set_ticks_position('both')
     gx.get_yaxis().set_ticks_position('both')
     gx.text(0.05, 0.9, '(g)', horizontalalignment='center', verticalalignment='center',
