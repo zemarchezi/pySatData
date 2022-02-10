@@ -96,21 +96,22 @@ def rotate_field_fac(x, y, z, bx, by, bz, ex, ey, ez):
     data: pandas dataframe with the columns: 'x', 'y', 'ex', 'ey', 'ez', 'bx', 'by', 'bz'
     '''
     # v1p = v1a = v1r = bp = ba = br = r =  b_fac = b_orig = np.zeros((len(x)))
+    
     tempB = np.zeros((len(x), 3))
     tempE = np.zeros((len(x), 3))
     for i in range(0, len(x)):
         Jac = np.zeros((3, 3))
-        r = [x[i], y[i], z[i]] / np.sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i])
-        Jac[0, :] = [bx[i], by[i], bz[i]] / np.sqrt(bx[i] * bx[i] + by[i] * by[i] + bz[i] * bz[i])
+        bxs = smooth(bx[i],11)
+        bys = smooth(by[i],11)
+        bzs = smooth(bz[i],11)
+        r = [x[i], y[i], z[i]] / np.sqrt(x[i] **2 + y[i] **2 + z[i] **2)
+        Jac[0, :] = [bxs[0], bys[0], bzs[0]] / np.sqrt(bxs[0] **2 + bys[0] ** 2 + bzs[0] **2 )
         Jac[1, :] = crossD(Jac[0, :], r) / normD(crossD(Jac[0, :], r))
         Jac[2, :] = crossD(Jac[1, :], Jac[0, :]) / normD(crossD(Jac[1, :], Jac[0, :]))
         # apply rotation for B
         tempB[i, :] = np.dot(Jac, ([bx[i], by[i], bz[i]]))
-        # Apply the rotation for vector V1
+        # Apply the rotation for E
         tempE[i, :] = np.dot(Jac, ([ex[i], ey[i], ez[i]]))
-    #        # testing whether the rotation is correct
-    #        tempFields['b_fac'][i] = np.linalg.norm([tempFields['bp'][i], tempFields['ba'][i], tempFields['br'][i]])
-    #        tempFields['b_orig'][i] = np.linalg.norm([bx[i], by[i], bz[i]])
 
     temp_data = [tempB[:, 0], tempB[:, 1], tempB[:, 2], tempE[:, 0], tempE[:, 1], tempE[:, 2], x, y, z]
     return (pd.DataFrame(np.transpose(temp_data),
