@@ -88,6 +88,10 @@ def calcExEFW(efield, bfield):
     
     return ex
 #%%
+def smooth(y, box_pts):
+    box = np.ones(box_pts)/box_pts
+    y_smooth = np.convolve(y, box, mode='same')
+    return y_smooth
 # convert the coordinate system from gse to field aligned system
 def rotate_field_fac(x, y, z, bx, by, bz, ex, ey, ez):
     '''
@@ -96,22 +100,28 @@ def rotate_field_fac(x, y, z, bx, by, bz, ex, ey, ez):
     data: pandas dataframe with the columns: 'x', 'y', 'ex', 'ey', 'ez', 'bx', 'by', 'bz'
     '''
     # v1p = v1a = v1r = bp = ba = br = r =  b_fac = b_orig = np.zeros((len(x)))
-    
+    bxs = smooth(bx,11)
+    bys = smooth(by,11)
+    bzs = smooth(bz,11)
+    exs = smooth(ex,11)
+    eys = smooth(ey,11)
+    ezs = smooth(ez,11)
     tempB = np.zeros((len(x), 3))
     tempE = np.zeros((len(x), 3))
     for i in range(0, len(x)):
-        Jac = np.zeros((3, 3))
-        bxs = smooth(bx[i],11)
-        bys = smooth(by[i],11)
-        bzs = smooth(bz[i],11)
+        JacB = np.zeros((3, 3))
+        JacE = np.zeros((3, 3))
         r = [x[i], y[i], z[i]] / np.sqrt(x[i] **2 + y[i] **2 + z[i] **2)
-        Jac[0, :] = [bxs[0], bys[0], bzs[0]] / np.sqrt(bxs[0] **2 + bys[0] ** 2 + bzs[0] **2 )
-        Jac[1, :] = crossD(Jac[0, :], r) / normD(crossD(Jac[0, :], r))
-        Jac[2, :] = crossD(Jac[1, :], Jac[0, :]) / normD(crossD(Jac[1, :], Jac[0, :]))
+        JacB[0, :] = [bxs[i], bys[i], bzs[i]] / np.sqrt(bxs[i] **2 + bys[i] ** 2 + bzs[i] **2 )
+        JacB[1, :] = crossD(JacB[0, :], r) / normD(crossD(JacB[0, :], r))
+        JacB[2, :] = crossD(JacB[1, :], JacB[0, :]) / normD(crossD(JacB[1, :], JacB[0, :]))
+        JacE[0, :] = [exs[i], eys[i], ezs[i]] / np.sqrt(exs[i] **2 + eys[i] ** 2 + ezs[i] **2 )
+        JacE[1, :] = crossD(JacE[0, :], r) / normD(crossD(JacE[0, :], r))
+        JacE[2, :] = crossD(JacE[1, :], JacE[0, :]) / normD(crossD(JacE[1, :], JacE[0, :]))
         # apply rotation for B
-        tempB[i, :] = np.dot(Jac, ([bx[i], by[i], bz[i]]))
+        tempB[i, :] = np.dot(JacB, ([bx[i], by[i], bz[i]]))
         # Apply the rotation for E
-        tempE[i, :] = np.dot(Jac, ([ex[i], ey[i], ez[i]]))
+        tempE[i, :] = np.dot(JacE, ([ex[i], ey[i], ez[i]]))
 
     temp_data = [tempB[:, 0], tempB[:, 1], tempB[:, 2], tempE[:, 0], tempE[:, 1], tempE[:, 2], x, y, z]
     return (pd.DataFrame(np.transpose(temp_data),
