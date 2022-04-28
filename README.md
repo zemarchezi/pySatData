@@ -13,6 +13,8 @@ Installation: ```pip instal -e .```
 ***
 ## config_file.json
 
+If some change in downloding directories is needed, it can be done in this file.
+
 ```pysatdata/resources/config_file.json```
 
 This file sets the http directory for downloading data and the local directory to download data.
@@ -22,7 +24,6 @@ The local directory files are organized as http directory, i.e.:
 
 This files handles with the different http subpaths for the different levels and intruments in each probe.
 
-If some change is needed, it can be done in this file.
 ***
 
 ```python
