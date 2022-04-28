@@ -1,12 +1,7 @@
 #%%
-import numpy as np
-import pandas as pd
-import pytz
 from pysatdata.loaders.load import *
 from pysatdata.utils.interpolate_flux_rbsp import *
 from pysatdata.utils.plotFunc.plot_funtions import *
-import datetime
-import gc
 from pysatdata.utils.library_functions import *
 #%%
 
