@@ -13,6 +13,7 @@ tests.py
 tests2.py
 testes.py
 test*.py
+tests*.py
 
 # Distribution / packaging
 .Python
