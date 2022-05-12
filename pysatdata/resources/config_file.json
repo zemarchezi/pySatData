@@ -90,7 +90,7 @@
                   "altern_subpath":"RBSP-{prb.upper()}/L{level}/%Y/%m/%d/",
                   "altern_filename":"rbsp-{prb}_{datatype}_{instrument}-L{level}_%Y%m%d_v*.cdf"
                },
-               "wrf":{
+               "wfr":{
                   "subpath":"rbsp{prb}/l{level}/{instrument}/{datatype}/{cadence}/%Y/",
                   "filename":"rbsp-{prb}_{datatype}-{cadence}_{instrument}-l{level}_%Y%m%d_v*.cdf",
                   "altern_subpath":"RBSP-{prb.upper()}/L{level}/%Y/%m/%d/",
@@ -226,7 +226,7 @@
                   "altern_subpath":"RBSP-{prb.upper()}/L{level}/%Y/%m/%d/",
                   "altern_filename":"rbsp-{prb}_{datatype}_{instrument}-L{level}_%Y%m%d_v*.cdf"
                },
-               "wrf":{
+               "wfr":{
                   "subpath":"rbsp{prb}/l{level}/{instrument}/{datatype}/{cadence}/%Y/",
                   "filename":"rbsp-{prb}_{datatype}-{cadence}_{instrument}-l{level}_%Y%m%d_v*.cdf",
                   "altern_subpath":"RBSP-{prb.upper()}/L{level}/%Y/%m/%d/",
