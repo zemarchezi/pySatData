@@ -6,7 +6,8 @@
 
 Python 3.8+
 
-Pandas, NumPy, wget, requests, cdflib, pytplot
+1. Clone or download the pySatData
+2. From the pySatData directory: 
 
 Installation: ```pip instal -e .```
 
