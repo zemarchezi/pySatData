@@ -140,6 +140,8 @@
                   "altern_subpath":"rbsp{prb}/l{level}/{datatype}/%Y/",
                   "altern_filename":"rbsp{prb}_{instrument}-l{level}_{datatype}_%Y%m%d_v*.cdf"
                }
+               
+               
             },
             "mageis":{"secondRemoteDir": "https://www.rbsp-ect.lanl.gov/data_pub/",
                "sectors":{
