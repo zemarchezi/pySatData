@@ -18,7 +18,7 @@ If some change in downloding directories is needed, it can be done in this file.
 
 ```pysatdata/resources/config_file.json```
 
-This file sets the http directory for downloading data and the local directory to download data.
+This file sets the http directory for downloading data and the local directory to save the downloaded data.
 
 The local directory files are organized as http directory, i.e.:
 * RBSP: HOME/sat_data/rbsp/rbspa/l2/ect/rept/sectors/rel03/YYYY/filename.cdf
