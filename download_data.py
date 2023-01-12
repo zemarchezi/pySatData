@@ -1,6 +1,6 @@
 #%%
 from pysatdata.loaders.load import *
-from pysatdata.utils.interpolate_flux_rbsp import *
+from pysatdata.utils.interpolate_flux_rbsp import * 
 from pysatdata.utils.plotFunc.plot_funtions import *
 from pysatdata.utils.library_functions import *
 #%%

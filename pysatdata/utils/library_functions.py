@@ -49,6 +49,16 @@ def butter_bandpass_filter(data, lowcut, highcut, fs, order):
     y = lfilter(b, a, data)
     return y
 
+def butter_highpass(cutoff, fs, order=5):
+    nyq = 0.5 * fs
+    normal_cutoff = cutoff / nyq
+    b, a = butter(order, normal_cutoff, btype='high', analog=False)
+    return b, a
+
+def butter_highpass_filter(data, cutoff, fs, order=5):
+    b, a = butter_highpass(cutoff, fs, order=order)
+    y = filtfilt(b, a, data)
+    return y
 
 # fill the gaps with nans
 def fill_nan(A):
@@ -71,7 +81,7 @@ def format_func(value, tick_number):
     return ('{:02d}:{:02d} UTC \n {:04d}/{:02d}/{:02d}'.format(hora.hour, hora.minute, hora.year, hora.month, hora.day))
 
 #@numba.jit(nopython=True, nogil=True)
-def calcExEFW(efield, bfield):
+def calcExEFW(efield, bfield, filter=True):
     ey = efield[:,1]
     ez = efield[:,2]
     bx = bfield[:,0]
@@ -80,12 +90,14 @@ def calcExEFW(efield, bfield):
 
     ex = np.zeros((len(bx)))
     for i in range(len(bx)):
-        angle = math.degrees(math.atan(bx[i]/(math.sqrt(by[i]**2 + bz[i]**2))))
-        if angle < 6.0:
-            ex[i] = np.nan
+        if filter:
+            angle = math.degrees(math.atan(bx[i]/(math.sqrt(by[i]**2 + bz[i]**2))))
+            if angle < 6.0:
+                ex[i] = np.nan
+            else:
+                ex[i] = -((ey[i]*by[i]) + (ez[i]*bz[i]))/(bx[i])
         else:
             ex[i] = -((ey[i]*by[i]) + (ez[i]*bz[i]))/(bx[i])
-    
     return ex
 #%%
 def smooth(y, box_pts):
