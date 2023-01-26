@@ -66,9 +66,9 @@ def fill_nan(A):
      interpolate to fill nan values
      '''
     if np.isnan(A[0]):
-        A[0] = min(A)
+        A[0] = np.nanmin(A)
     if np.isnan(A[-1]):
-        A[-1] = min(A)
+        A[-1] = np.nanmin(A)
     inds = np.arange(A.shape[0])
     good = np.where(np.isfinite(A))
     f = interp.interp1d(inds[good], A[good], bounds_error=False)

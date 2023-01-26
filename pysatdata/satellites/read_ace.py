@@ -27,8 +27,8 @@ def readData_ace(files, usePyTplot, usePandas,
 
         for vas in tvars:
             if 'time' in pytplot.data_quants[vas].coords.keys():
-                time_ind = pytplot.data_quants[vas].coords['time'].values
-                time = [datetime.datetime.fromtimestamp(i, pytz.timezone("UTC")) for i in time_ind]
+                time = pytplot.data_quants[vas].coords['time'].values
+                # time = [datetime.datetime.fromtimestamp(i, pytz.timezone("UTC")) for i in time_ind]
                 out_vars_df = pd.DataFrame(out_dict, index=time)
             else:
                 out_vars_df = pd.DataFrame(out_dict)

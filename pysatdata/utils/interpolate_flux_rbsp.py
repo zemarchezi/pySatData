@@ -9,14 +9,26 @@ def interpolateFluxRbsp(enSignal, lValues, timeArray, resolution_L=0.025):
 
     L_inerp = fill_nan(lValues)
 
-    tHour0 = timeArray[0].timetuple().tm_hour
-    tHour1 = timeArray[-1].timetuple().tm_hour
-    tMin0 = timeArray[0].timetuple().tm_min
-    tMin1 = timeArray[-1].timetuple().tm_min
-    tSec0 = timeArray[0].timetuple().tm_sec
-    tSec1 = timeArray[-1].timetuple().tm_sec
-    dad0 = timeArray[0].timetuple().tm_yday + ((tHour0 / 24) + (tMin0 / (60*24)) + (tSec0 / (60*60*24)))
-    dad1 = timeArray[-1].timetuple().tm_yday + ((tHour1 / 24) + (tMin1 / (60*24)) + (tSec1 / (60*60*24)))
+    tHour0 = timeArray[0].hour
+    tHour1 = timeArray[-1].hour
+    tMin0 = timeArray[0].min
+    tMin1 = timeArray[-1].min
+    tSec0 = timeArray[0].second
+    tSec1 = timeArray[-1].second
+    dad0 = int(timeArray[0].strftime('%j')) + ((tHour0 / 24) + (tMin0 / (60*24)) + (tSec0 / (60*60*24)))
+    dad1 = int(timeArray[-1].strftime('%j')) + ((tHour1 / 24) + (tMin1 / (60*24)) + (tSec1 / (60*60*24)))
+    # dad0 = timeArray[0].day + ((tHour0 / 24) + (tMin0 / (60*24)) + (tSec0 / (60*60*24)))
+    # dad1 = timeArray[-1].day + ((tHour1 / 24) + (tMin1 / (60*24)) + (tSec1 / (60*60*24)))
+
+
+    # tHour0 = timeArray[0].timetuple().tm_hour
+    # tHour1 = timeArray[-1].timetuple().tm_hour
+    # tMin0 = timeArray[0].timetuple().tm_min
+    # tMin1 = timeArray[-1].timetuple().tm_min
+    # tSec0 = timeArray[0].timetuple().tm_sec
+    # tSec1 = timeArray[-1].timetuple().tm_sec
+    # dad0 = timeArray[0].timetuple().tm_yday + ((tHour0 / 24) + (tMin0 / (60*24)) + (tSec0 / (60*60*24)))
+    # dad1 = timeArray[-1].timetuple().tm_yday + ((tHour1 / 24) + (tMin1 / (60*24)) + (tSec1 / (60*60*24)))
 
     time = np.linspace(dad0 , dad1, len(L_inerp))
     p = np.matrix.transpose(np.asmatrix([time, L_inerp]))
