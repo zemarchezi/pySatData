@@ -490,6 +490,12 @@
                   "subpath":"th{prb}/l{level}/{instrument}/%Y/",
                   "filename":"th{prb}_l{level}_{instrument}_%Y%m%d_v*.cdf"
                }
+            },
+            "state":{
+               "state":{
+                  "subpath":"th{prb}/l{level}/{instrument}/%Y/",
+                  "filename":"th{prb}_l{level}_{instrument}_%Y%m%d_v*.cdf"
+               }
             }
          },
          "a":{
@@ -549,6 +555,12 @@
             },
             "sst":{
                "sst":{
+                  "subpath":"th{prb}/l{level}/{instrument}/%Y/",
+                  "filename":"th{prb}_l{level}_{instrument}_%Y%m%d_v*.cdf"
+               }
+            },
+            "state":{
+               "state":{
                   "subpath":"th{prb}/l{level}/{instrument}/%Y/",
                   "filename":"th{prb}_l{level}_{instrument}_%Y%m%d_v*.cdf"
                }
