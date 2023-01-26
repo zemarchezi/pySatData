@@ -15,8 +15,10 @@ def interpolateFluxRbsp(enSignal, lValues, timeArray, resolution_L=0.025):
     tMin1 = timeArray[-1].min
     tSec0 = timeArray[0].second
     tSec1 = timeArray[-1].second
-    dad0 = timeArray[0].day + ((tHour0 / 24) + (tMin0 / (60*24)) + (tSec0 / (60*60*24)))
-    dad1 = timeArray[-1].day + ((tHour1 / 24) + (tMin1 / (60*24)) + (tSec1 / (60*60*24)))
+    dad0 = int(timeArray[0].strftime('%j')) + ((tHour0 / 24) + (tMin0 / (60*24)) + (tSec0 / (60*60*24)))
+    dad1 = int(timeArray[-1].strftime('%j')) + ((tHour1 / 24) + (tMin1 / (60*24)) + (tSec1 / (60*60*24)))
+    # dad0 = timeArray[0].day + ((tHour0 / 24) + (tMin0 / (60*24)) + (tSec0 / (60*60*24)))
+    # dad1 = timeArray[-1].day + ((tHour1 / 24) + (tMin1 / (60*24)) + (tSec1 / (60*60*24)))
 
 
     # tHour0 = timeArray[0].timetuple().tm_hour
