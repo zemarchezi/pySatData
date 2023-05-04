@@ -380,7 +380,15 @@
                   "subpath":"{instrument}/level_{level}_cdaweb/mfi_{datatype}/%Y/",
                   "filename":"ac_{datatype}_mfi_%Y%m%d_v*.cdf"
                },
+               "h1":{
+                  "subpath":"{instrument}/level_{level}_cdaweb/mfi_{datatype}/%Y/",
+                  "filename":"ac_{datatype}_mfi_%Y%m%d_v*.cdf"
+               },
                "h2":{
+                  "subpath":"{instrument}/level_{level}_cdaweb/mfi_{datatype}/%Y/",
+                  "filename":"ac_{datatype}_mfi_%Y%m%d_v*.cdf"
+               },
+               "h3":{
                   "subpath":"{instrument}/level_{level}_cdaweb/mfi_{datatype}/%Y/",
                   "filename":"ac_{datatype}_mfi_%Y%m%d_v*.cdf"
                },
