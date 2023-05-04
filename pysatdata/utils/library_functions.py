@@ -246,7 +246,7 @@ def testRemoteDir(config_file, satellite, prb, instrument, level, datatype):
     try:
         remote_path = config_file[satellite]['remote_data_dir']
         responseSubpath = pool.request("GET", remote_path, preload_content=False,
-                                       timeout=1)
+                                    timeout=1)
         responseSubpath.close()
         logging.warning(f"Using {config_file[satellite]['remote_data_dir']}...")
         changeRemoteDir = False
@@ -257,7 +257,7 @@ def testRemoteDir(config_file, satellite, prb, instrument, level, datatype):
         logging.info(f"testing {remote_path}...")
 
         responseSubpath = pool.request("GET", remote_path, preload_content=False,
-                                       timeout=1)
+                                    timeout=1)
         responseSubpath.close()
         logging.warning(f"Using {remote_path}...")
         changeRemoteDir = True
@@ -275,5 +275,4 @@ def testRemoteDir(config_file, satellite, prb, instrument, level, datatype):
     else:
         subpathKey = 'subpath'
         filenameKey = 'filename'
-
     return remote_path, subpathKey, filenameKey, datatype

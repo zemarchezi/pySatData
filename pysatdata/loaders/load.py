@@ -45,7 +45,10 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
         config_file[satellite]['local_data_dir'] = os.environ[f'{satellite.upper()}_DATA_DIR']
 
     # local data path
-    local_path = str(Path.home().joinpath(config_file[satellite]['local_data_dir'], satellite))
+    if config_file[satellite]['local_data_dir'] != "sat_data/":
+        local_path = f"/{config_file[satellite]['local_data_dir']}{ satellite}"
+    else:
+        local_path = str(Path.home().joinpath(config_file[satellite]['local_data_dir'], satellite))
     logging.info(f'Local Download Path: {local_path}')
 
 
