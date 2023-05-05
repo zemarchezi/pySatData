@@ -1,7 +1,8 @@
 import os
+import re
 import warnings
 import requests
-from loguru import logger as logging
+import logging
 import fnmatch
 import datetime
 import pkg_resources
@@ -10,6 +11,8 @@ from pathlib import Path
 from shutil import copyfileobj, copy
 from tempfile import NamedTemporaryFile
 from html.parser import HTMLParser
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 
 # the following is used to parse the links from an HTML index file
@@ -18,16 +21,27 @@ class LinkParser(HTMLParser):
         if tag == 'a':
             attrs = {k: v for (k, v) in attrs}
             if 'href' in attrs:
+                link = attrs['href']
+                # kludge to support http://rbspice?.ftecs.com/
+                if '/' in link:
+                    link = link.split('/')[-1]
                 try:
-                    self.links.append((attrs['href']))
+                    self.links.append((link))
                 except AttributeError:
-                    self.links = [(attrs['href'])]
+                    self.links = [(link)]
+    
 
-
-def download_file(url=None, filename=None, headers={}, username=None, password=None, verify=False, session=None):
-    '''
-    Download a file and return its local path; this function is primarily meant to be called by the download function below
-
+def download_file(url=None,
+                  filename=None,
+                  headers={},
+                  username=None,
+                  password=None,
+                  verify=False,
+                  session=None,
+                  basic_auth=False):
+    """
+    Download a file and return its local path; this function is primarily meant to be called by the download function
+    
     Parameters:
         url: str
             Remote URL to download
@@ -36,44 +50,51 @@ def download_file(url=None, filename=None, headers={}, username=None, password=N
         headers: dict
             Dictionary containing the headers to be passed to the requests get call
         username: str
-            user name to be used in HTTP authentication
+            Username to be used in HTTP authentication
         password: str
             password to be used in HTTP authentication
         verify: bool
-            Flag indicating whether or not to verify the SSL/TLS certificate
+            Flag indicating whether to verify the SSL/TLS certificate
         session: requests.Session object
             Requests session object that allows you to persist things like HTTP authentication through multiple calls
     Returns:
         String containing the local file name
-    '''
+    """
 
     if session is None:
         session = requests.Session()
-
-    if username != None:
-        session.auth = (username, password)
+        retry = Retry(connect=3, backoff_factor=0.5)
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
+    
+    if username is not None:
+        session.auth = requests.auth.HTTPDigestAuth(username, password)
 
     # check if the file exists, and if so, set the last modification time in the header
     # this allows you to avoid re-downloading files that haven't changed
     if os.path.exists(filename):
-        headers['If-Modified-Since'] = (datetime.datetime.utcfromtimestamp(os.path.getmtime(filename))).strftime(
-            '%a, %d %b %Y %H:%M:%S GMT')
+        mod_tm = (datetime.datetime.utcfromtimestamp(os.path.getmtime(filename))).strftime('%a, %d %b %Y %H:%M:%S GMT')
+        headers['If-Modified-Since'] = mod_tm
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=ResourceWarning)
-        fsrc = session.get(url, stream=True, verify=verify, headers=headers)
+        if not basic_auth:
+            fsrc = session.get(url, stream=True, verify=verify, headers=headers)
+        else:
+            fsrc = session.get(url, stream=True, verify=verify, headers=headers, auth=(username, password))
 
     # need to delete the If-Modified-Since header so it's not set in the dictionary in subsequent calls
-    if headers.get('If-Modified-Since') != None:
+    if headers.get('If-Modified-Since') is not None:
         del headers['If-Modified-Since']
 
     # the file hasn't changed
-    if fsrc.status_code == 304 or os.path.isfile(filename) == True:
+    if fsrc.status_code == 304:
         logging.info('File is current: ' + filename)
         fsrc.close()
         return filename
 
-    # file not found
+    # file not found 
     if fsrc.status_code == 404:
         logging.error('Remote file not found: ' + url)
         fsrc.close()
@@ -94,11 +115,8 @@ def download_file(url=None, filename=None, headers={}, username=None, password=N
 
     ftmp = NamedTemporaryFile(delete=False)
 
-    try:
-        with open(ftmp.name, 'wb') as f:
-            copyfileobj(fsrc.raw, f)
-    except (Exception) as e:
-        logging.error(e)
+    with open(ftmp.name, 'wb') as f:
+        copyfileobj(fsrc.raw, f)
 
     # make sure the directory exists
     if not os.path.exists(os.path.dirname(filename)) and os.path.dirname(filename) != '':
@@ -109,15 +127,27 @@ def download_file(url=None, filename=None, headers={}, username=None, password=N
 
     fsrc.close()
     ftmp.close()
-
+    os.unlink(ftmp.name)  # delete the temporary file
+    
     logging.info('Download complete: ' + filename)
-    os.remove(ftmp.name)
+
     return filename
 
 
-def download(remote_path='', remote_file='', local_path='', local_file='', headers={}, username=None, password=None,
-             verify=True, session=None, no_download=False, last_version=False):
-    '''
+def download(remote_path='',
+             remote_file='',
+             local_path='',
+             local_file='',
+             headers={},
+             username=None,
+             password=None,
+             verify=True,
+             session=None,
+             no_download=False,
+             last_version=False,
+             basic_auth=False,
+             regex=False):
+    """
     Download one or more remote files and return their local paths.
     Parameters:
         remote_path: str
@@ -131,21 +161,27 @@ def download(remote_path='', remote_file='', local_path='', local_file='', heade
         headers: dict
             Dictionary containing the headers to be passed to the requests get call
         username: str
-            user name to be used in HTTP authentication
+            Username to be used in HTTP authentication
         password: str
-            password to be used in HTTP authentication
+            Password to be used in HTTP authentication
+        basic_auth: bool
+            Flag to indicate that the remote server uses basic authentication
+            instead of digest authentication
         verify: bool
-            Flag indicating whether or not to verify the SSL/TLS certificate
+            Flag indicating whether to verify the SSL/TLS certificate
         session: requests.Session object
             Requests session object that allows you to persist things like HTTP authentication through multiple calls
         no_download: bool
             Flag to not download remote files
         last_version: bool
-            Flag to only download the last in file in a lexically sorted
+            Flag to only download the last in file in a lexically sorted 
             list when multiple matches are found using wildcards
+        regex: bool
+            Flag to allow regular expressions in the file name matching,
+            instead of unix style matching
     Returns:
         String list specifying the full local path to all requested files
-    '''
+    """
     local_file_in = local_file
 
     if isinstance(remote_path, list):
@@ -163,13 +199,17 @@ def download(remote_path='', remote_file='', local_path='', local_file='', heade
         logging.error('Username provided without password')
         return
 
-    if session == None:
+    if session is None:
         session = requests.Session()
+        retry = Retry(connect=3, backoff_factor=0.5)
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
 
-    if username != None:
-        session.auth = (username, password)
+    if username is not None:
+        session.auth = requests.auth.HTTPDigestAuth(username, password)
 
-    if headers.get('User-Agent') == None:
+    if headers.get('User-Agent') is None:
         try:
             release_version = pkg_resources.get_distribution("pyspedas").version
         except pkg_resources.DistributionNotFound:
@@ -182,11 +222,11 @@ def download(remote_path='', remote_file='', local_path='', local_file='', heade
     if not isinstance(remote_file, list):
         remote_file = [remote_file]
 
-    urls = [remote_path + rfile for rfile in remote_file]
+    urls = [remote_path+rfile for rfile in remote_file]
 
     for url in urls:
         resp_data = None
-        url_file = url[url.rfind("/") + 1:]
+        url_file = url[url.rfind("/")+1:]
         url_base = url.replace(url_file, '')
 
         # automatically use remote_file locally if local_file is not specified
@@ -198,16 +238,16 @@ def download(remote_path='', remote_file='', local_path='', local_file='', heade
                 local_file = url.replace(remote_path, '')
 
                 if local_file == '':  # remote_path was the full file name
-                    local_file = remote_path[remote_path.rfind("/") + 1:]
+                    local_file = remote_path[remote_path.rfind("/")+1:]
 
         filename = os.path.join(local_path, local_file)
 
-        short_path = local_file[:1 + local_file.rfind("/")]
+        short_path = local_file[:1+local_file.rfind("/")]
 
-        if no_download is False:
+        if not no_download:
             # expand the wildcards in the url
-            if '?' in url or '*' in url and no_download is False:
-                if index_table.get(url_base) != None:
+            if '?' in url or '*' in url or regex and no_download is False:
+                if index_table.get(url_base) is not None:
                     links = index_table[url_base]
                 else:
                     logging.info('Downloading remote index: ' + url_base)
@@ -215,7 +255,13 @@ def download(remote_path='', remote_file='', local_path='', local_file='', heade
                     # we'll need to parse the HTML index file for the file list
                     with warnings.catch_warnings():
                         warnings.simplefilter("ignore", category=ResourceWarning)
-                        html_index = session.get(url_base, verify=verify, headers=headers)
+                        try:
+                            if not basic_auth:
+                                html_index = session.get(url_base, verify=verify, headers=headers)
+                            else:
+                                html_index = session.get(url_base, verify=verify, headers=headers, auth=(username, password))
+                        except requests.exceptions.ConnectionError:
+                            continue
 
                     if html_index.status_code == 404:
                         logging.error('Remote index not found: ' + url_base)
@@ -236,8 +282,15 @@ def download(remote_path='', remote_file='', local_path='', local_file='', heade
                         links = []
 
                 # find the file names that match our string
-                # note: fnmatch.filter accepts ? (single character) and * (multiple characters)
-                new_links = fnmatch.filter(links, url_file)
+                if not regex:
+                    # note: fnmatch.filter accepts ? (single character) and * (multiple characters)
+                    new_links = fnmatch.filter(links, url_file)
+                else:
+                    reg_expression = re.compile(url_file)
+                    new_links = list(filter(reg_expression.match, links))
+
+                if len(new_links) == 0:
+                    logging.info("No links matching pattern %s found at remote index %s",url_file,url_base)
 
                 if last_version and len(new_links) > 1:
                     new_links = sorted(new_links)
@@ -249,9 +302,9 @@ def download(remote_path='', remote_file='', local_path='', local_file='', heade
 
                 # download the files
                 for new_link in new_links:
-                    resp_data = download(remote_path=remote_path, remote_file=short_path + new_link,
-                                         local_path=local_path, username=username, password=password, verify=verify,
-                                         headers=headers, session=session)
+                    resp_data = download(remote_path=remote_path, remote_file=short_path+new_link,
+                                         local_path=local_path, username=username, password=password,
+                                         verify=verify, headers=headers, session=session, basic_auth=basic_auth)
                     if resp_data is not None:
                         for file in resp_data:
                             out.append(file)
@@ -259,8 +312,8 @@ def download(remote_path='', remote_file='', local_path='', local_file='', heade
                 continue
 
             resp_data = download_file(url=url, filename=filename, username=username, password=password, verify=verify,
-                                      headers=headers, session=session)
-
+                                      headers=headers, session=session, basic_auth=basic_auth)
+        
         if resp_data is not None:
             if not isinstance(resp_data, list):
                 resp_data = [resp_data]
@@ -269,14 +322,20 @@ def download(remote_path='', remote_file='', local_path='', local_file='', heade
         else:
             # download wasn't successful, search for local files
             logging.info('Searching for local files...')
-
+                
             if local_path == '':
                 local_path_to_search = str(Path('.').resolve())
             else:
                 local_path_to_search = local_path
 
             for dirpath, dirnames, filenames in os.walk(local_path_to_search):
-                matching_files = fnmatch.filter(filenames, local_file[local_file.rfind("/") + 1:])
+                local = local_file[local_file.rfind("/")+1:]
+                if not regex:
+                    matching_files = fnmatch.filter(filenames, local)
+                else:
+                    reg_expression = re.compile(local)
+                    matching_files = list(filter(reg_expression.match, filenames))
+
                 for file in matching_files:
                     out.append(os.path.join(dirpath, file))
 
