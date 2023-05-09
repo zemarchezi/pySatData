@@ -8,7 +8,7 @@ from codecs import open
 
 setup(
     name='pysatdata',
-    version='1.1.2',
+    version='2.0.1',
     description='Python Space Physics Satellite Data Analysis Toolkit',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -29,7 +29,7 @@ setup(
                       'pywavelets', 'pyqtgraph==0.12.2', 'astropy', 'loguru',
                       'aacgmv2>=2.6.2', 'matplotlib', 'netCDF4',
                       'pandas', 'pycwt', 'pytz', 'scipy', 'tqdm',
-                      'xarray','urllib3'],
+                      'xarray','urllib3', 'glob'],
     python_requires='>=3.6',
     include_package_data=True,
 )
