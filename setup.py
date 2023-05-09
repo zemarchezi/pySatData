@@ -29,7 +29,7 @@ setup(
                       'pywavelets', 'pyqtgraph==0.12.2', 'astropy', 'loguru',
                       'aacgmv2>=2.6.2', 'matplotlib', 'netCDF4',
                       'pandas', 'pycwt', 'pytz', 'scipy', 'tqdm',
-                      'xarray','urllib3', 'glob'],
+                      'xarray','urllib3', 'glob2'],
     python_requires='>=3.6',
     include_package_data=True,
 )
