@@ -248,7 +248,7 @@ def testFiles(local_path, remote_names):
         if len(temp_find)==0:
             non_exiting_names.append(rn)
         else:
-            logging.info(f"File is current: {local_path}/{rn}")
+            logging.info(f"File is current: {temp_find[0]}")
 
 
     return non_exiting_names
