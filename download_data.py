@@ -4,7 +4,19 @@ from pysatdata.utils.interpolate_flux_rbsp import *
 from pysatdata.utils.plotFunc.plot_funtions import *
 from pysatdata.utils.library_functions import *
 #%%
-
+trange= ['2012-11-01','2012-11-03']
+downloadonly = True
+config_file_sat = './pysatdata/resources/config_file.json'
+paramLoadrept = {"satellite": 'rbsp', "probe": ['a'], "level": '3', "rel": "rel03",
+                    "instrument": 'rept', "datatype": "sectors"}
+#%%
+varss_rept = load_sat(trange=trange, satellite=paramLoadrept['satellite'],
+                        probe=paramLoadrept['probe'], level='2', 
+                        rel=paramLoadrept['rel'], instrument=paramLoadrept['instrument'],
+                        datatype=paramLoadrept['datatype'],testRemotePath=False,
+                        config_file=config_file_sat, downloadonly=downloadonly, 
+                        searchFilesFirst=True, usePandas=False, usePyTplot=True)
+#%%
 #
 # for n, dd in enumerate(dataT.index):
 
@@ -90,3 +102,8 @@ trange= ['2012-08-01','2019-07-01']
 config_file_sat = './pysatdata/resources/config_file.json'
 
 varss_efw = downloadData(trange, config_file_sat)
+
+
+#%%
+
+# %%
