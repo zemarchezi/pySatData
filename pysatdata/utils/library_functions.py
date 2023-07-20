@@ -9,6 +9,7 @@ import pandas as pd
 from loguru import logger as logging
 import urllib3
 from urllib3 import PoolManager
+import glob
 #import numba
 #from numba import jit
 
@@ -239,6 +240,19 @@ def cutFlux_lshell2(enSignal, lvalue):
 
 
     return cutF.interpolate('linear')
+
+def testFiles(local_path, remote_names):
+    non_exiting_names = []
+    for rn in remote_names:
+        temp_find = glob.glob(f"{local_path}/{rn}")
+        if len(temp_find)==0:
+            non_exiting_names.append(rn)
+        else:
+            logging.info(f"File is current: {temp_find[0]}")
+
+
+    return non_exiting_names
+
 
 def testRemoteDir(config_file, satellite, prb, instrument, level, datatype):
     pool = PoolManager()

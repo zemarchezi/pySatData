@@ -1,5 +1,5 @@
 from pysatdata.utils.dailynames import dailynames
-from pysatdata.utils.library_functions import testRemoteDir
+from pysatdata.utils.library_functions import testRemoteDir, testFiles
 from pysatdata.utils.download import download
 from pysatdata.resources.config import openConfigFile
 from pysatdata.satellites.read_goes import *
@@ -31,6 +31,8 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
              time_clip: bool=False,
              usePandas: bool = True,
              usePyTplot: bool = False,
+             testRemotePath: bool=False,
+             searchFilesFirst: bool=False,
              config_file: str = './pysatdata/resources/config_file.json'):
 
 
@@ -56,8 +58,13 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
     for prb in probe:
         logging.warning("Selecting the sub path key")
         # test remote Path
-        remote_path, subpathKey, filenameKey, datatype = \
-            testRemoteDir(config_file, satellite, prb, instrument, level, datatype)
+        if testRemotePath:
+            remote_path, subpathKey, filenameKey, datatype = \
+                testRemoteDir(config_file, satellite, prb, instrument, level, datatype)
+        else:
+            remote_path = config_file[satellite]['remote_data_dir']
+            subpathKey = 'subpath'
+            filenameKey = 'filename'
         logging.info(f'Remotepath: {remote_path}')
         # subpathKey = "altern_subpath"
         # filenameKey = "altern_filename"
@@ -73,7 +80,10 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
 
         # find the full remote path names using the trange
         remote_names = dailynames(file_format=pathformat, trange=trange)
-        # print(remote_names)
+        
+        if searchFilesFirst:
+            remote_names = testFiles(local_path, remote_names)
+        
         out_files = []
 
         files = download(remote_file=remote_names, remote_path=remote_path, local_path=local_path, no_download=no_update)
