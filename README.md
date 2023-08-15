@@ -1,5 +1,6 @@
 # Basic documentation for pySatData
 
+The structure of most functions and some of loaders are from pySPEDAS (https://github.com/spedas/pyspedas) repository. I just used and organized in a way that I felt easier for my purposes :).
 
 ## Requirements
 
