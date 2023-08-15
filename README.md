@@ -39,3 +39,6 @@ varss_rept = load_sat(trange=trange, satellite='rbsp',
                      config_file='./pysatdata/resources/config_file.json', downloadonly=False,
                      usePandas=False, usePyTplot=True)
 ```
+
+
+See ```plot_interpFlux_RBSP.py``` for an example on plotting the interpolated electron flux 
