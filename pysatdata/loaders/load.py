@@ -5,6 +5,7 @@ from pysatdata.resources.config import openConfigFile
 from pysatdata.satellites.read_goes import *
 from pysatdata.satellites.read_rbsp import *
 from pysatdata.satellites.read_ace import *
+from pysatdata.satellites.read_ace_merged import *
 from pysatdata.satellites.read_themis import *
 from pathlib import Path
 from loguru import logger as logging
@@ -104,7 +105,11 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
         tvars = readData_rbsp(out_files, usePyTplot, usePandas, suffix, get_support_data,
                               varformat, varnames, notplot)
     if satellite in ['ace', 'omni']:
-        tvars = readData_ace(out_files, usePyTplot, usePandas, suffix, get_support_data,
+        if instrument in ['merged']:
+            tvars = readData_ace_merged(out_files, usePyTplot, usePandas, suffix, get_support_data,
+                              varformat, varnames, notplot)
+        else:
+            tvars = readData_ace(out_files, usePyTplot, usePandas, suffix, get_support_data,
                               varformat, varnames, notplot)
     if satellite == 'themis':
         tvars = readData_themis(out_files, usePyTplot, usePandas, suffix, get_support_data,

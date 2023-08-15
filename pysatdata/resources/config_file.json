@@ -400,6 +400,12 @@
                   "subpath":"{instrument}/level_{level}_cdaweb/mfi_{datatype}/%Y/",
                   "filename":"ac_{datatype}_mfi_%Y%m%d_v*.cdf"
                }
+            },
+            "merged":{
+               "4_min":{
+                  "subpath":"{instrument}/{datatype}_merged_mag_plasma/",
+                  "filename":"ace_m%Y*.dat"
+               }
             }
          }
       }

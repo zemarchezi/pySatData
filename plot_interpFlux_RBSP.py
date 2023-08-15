@@ -16,6 +16,17 @@ trange_plot=['2016-07-06', '2016-07-10'] # time range for ploting
 trange=['2016-07-05', '2016-07-11'] # time range for interpolated data (requires a little bit more to overcome the edge problemns in interpolation)
 
 #%%
+# test loading merged Ace data
+# # define the details for OMNI datsa (Only if you need it)
+# paramLoadSat = {"satellite": 'ace', "probe": 'ace',"instrument": 'merged', "datatype": '4_min'}
+# pytplot.del_data()
+# varss_aceSwe = load_sat(trange=trange, satellite=paramLoadSat['satellite'],
+#                          probe=[paramLoadSat['probe']], rel='rel03',
+#                          instrument=paramLoadSat['instrument'],datatype=paramLoadSat['datatype'],
+#                          config_file=config_file_sat, downloadonly=False,
+#                          usePandas=True, usePyTplot=False)
+
+#%%
 
 paramLoadSat = {"satellite": 'rbsp', "probe": 'a', "level": '3', "rel": "rel03",
                 "instrument": 'rept', "datatype": 'sectors'}
