@@ -1,10 +1,11 @@
 from pysatdata.utils.dailynames import dailynames
-from pysatdata.utils.library_functions import testRemoteDir
+from pysatdata.utils.library_functions import testRemoteDir, testFiles
 from pysatdata.utils.download import download
 from pysatdata.resources.config import openConfigFile
 from pysatdata.satellites.read_goes import *
 from pysatdata.satellites.read_rbsp import *
 from pysatdata.satellites.read_ace import *
+from pysatdata.satellites.read_ace_merged import *
 from pysatdata.satellites.read_themis import *
 from pathlib import Path
 from loguru import logger as logging
@@ -31,6 +32,8 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
              time_clip: bool=False,
              usePandas: bool = True,
              usePyTplot: bool = False,
+             testRemotePath: bool=False,
+             searchFilesFirst: bool=False,
              config_file: str = './pysatdata/resources/config_file.json'):
 
 
@@ -45,7 +48,10 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
         config_file[satellite]['local_data_dir'] = os.environ[f'{satellite.upper()}_DATA_DIR']
 
     # local data path
-    local_path = str(Path.home().joinpath(config_file[satellite]['local_data_dir'], satellite))
+    if config_file[satellite]['local_data_dir'] != "sat_data/":
+        local_path = f"/{config_file[satellite]['local_data_dir']}{ satellite}"
+    else:
+        local_path = str(Path.home().joinpath(config_file[satellite]['local_data_dir'], satellite))
     logging.info(f'Local Download Path: {local_path}')
 
 
@@ -53,13 +59,20 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
     for prb in probe:
         logging.warning("Selecting the sub path key")
         # test remote Path
-        remote_path, subpathKey, filenameKey, datatype = \
-            testRemoteDir(config_file, satellite, prb, instrument, level, datatype)
+        if testRemotePath:
+            remote_path, subpathKey, filenameKey, datatype = \
+                testRemoteDir(config_file, satellite, prb, instrument, level, datatype)
+        else:
+            remote_path = config_file[satellite]['remote_data_dir']
+            subpathKey = 'subpath'
+            filenameKey = 'filename'
         logging.info(f'Remotepath: {remote_path}')
         # subpathKey = "altern_subpath"
         # filenameKey = "altern_filename"
+        if instrument == "MagEphem":
+            remote_path = config_file[satellite]['remote_subpath'][str(prb)][instrument]["secondRemoteDir"]
         # # datatype = 'pitchangle'
-        # remote_path = config_file[satellite]['remote_subpath'][str(prb)][instrument]["secondRemoteDir"]
+
 
         subpathformat = config_file[satellite]['remote_subpath'][str(prb)][instrument][datatype][subpathKey]
         subpathformat = eval(f"f'{subpathformat}'")
@@ -70,7 +83,10 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
 
         # find the full remote path names using the trange
         remote_names = dailynames(file_format=pathformat, trange=trange)
-        # print(remote_names)
+        
+        if searchFilesFirst:
+            remote_names = testFiles(local_path, remote_names)
+        
         out_files = []
 
         files = download(remote_file=remote_names, remote_path=remote_path, local_path=local_path, no_download=no_update)
@@ -91,7 +107,11 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
         tvars = readData_rbsp(out_files, usePyTplot, usePandas, suffix, get_support_data,
                               varformat, varnames, notplot)
     if satellite in ['ace', 'omni']:
-        tvars = readData_ace(out_files, usePyTplot, usePandas, suffix, get_support_data,
+        if instrument in ['merged']:
+            tvars = readData_ace_merged(out_files, usePyTplot, usePandas, suffix, get_support_data,
+                              varformat, varnames, notplot)
+        else:
+            tvars = readData_ace(out_files, usePyTplot, usePandas, suffix, get_support_data,
                               varformat, varnames, notplot)
     if satellite == 'themis':
         tvars = readData_themis(out_files, usePyTplot, usePandas, suffix, get_support_data,

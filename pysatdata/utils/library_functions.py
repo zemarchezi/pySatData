@@ -9,6 +9,7 @@ import pandas as pd
 from loguru import logger as logging
 import urllib3
 from urllib3 import PoolManager
+import glob
 #import numba
 #from numba import jit
 
@@ -66,9 +67,9 @@ def fill_nan(A):
      interpolate to fill nan values
      '''
     if np.isnan(A[0]):
-        A[0] = min(A)
+        A[0] = np.nanmin(A)
     if np.isnan(A[-1]):
-        A[-1] = min(A)
+        A[-1] = np.nanmin(A)
     inds = np.arange(A.shape[0])
     good = np.where(np.isfinite(A))
     f = interp.interp1d(inds[good], A[good], bounds_error=False)
@@ -240,13 +241,26 @@ def cutFlux_lshell2(enSignal, lvalue):
 
     return cutF.interpolate('linear')
 
+def testFiles(local_path, remote_names):
+    non_exiting_names = []
+    for rn in remote_names:
+        temp_find = glob.glob(f"{local_path}/{rn}")
+        if len(temp_find)==0:
+            non_exiting_names.append(rn)
+        else:
+            logging.info(f"File is current: {temp_find[0]}")
+
+
+    return non_exiting_names
+
+
 def testRemoteDir(config_file, satellite, prb, instrument, level, datatype):
     pool = PoolManager()
     logging.info("Testing Connection")
     try:
         remote_path = config_file[satellite]['remote_data_dir']
         responseSubpath = pool.request("GET", remote_path, preload_content=False,
-                                       timeout=1)
+                                    timeout=1)
         responseSubpath.close()
         logging.warning(f"Using {config_file[satellite]['remote_data_dir']}...")
         changeRemoteDir = False
@@ -257,7 +271,7 @@ def testRemoteDir(config_file, satellite, prb, instrument, level, datatype):
         logging.info(f"testing {remote_path}...")
 
         responseSubpath = pool.request("GET", remote_path, preload_content=False,
-                                       timeout=1)
+                                    timeout=1)
         responseSubpath.close()
         logging.warning(f"Using {remote_path}...")
         changeRemoteDir = True
@@ -275,5 +289,4 @@ def testRemoteDir(config_file, satellite, prb, instrument, level, datatype):
     else:
         subpathKey = 'subpath'
         filenameKey = 'filename'
-
     return remote_path, subpathKey, filenameKey, datatype
