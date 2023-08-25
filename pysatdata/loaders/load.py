@@ -39,7 +39,8 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
 
     global remote_path, out_files, pathformat, tvars
 
-    config_file = openConfigFile(path=config_file).config_file_sat
+    # config_file = openConfigFile(path=config_file).config_file_sat
+    config_file = openConfigFile().config_file_sat
     # set the download data directories
     if os.environ.get('DATA_DIR'):
         config_file[satellite]['local_data_dir'] = os.sep.join([os.environ['DATA_DIR'], f'{satellite}'])
