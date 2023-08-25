@@ -69,8 +69,10 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
         logging.info(f'Remotepath: {remote_path}')
         # subpathKey = "altern_subpath"
         # filenameKey = "altern_filename"
+        if instrument == "MagEphem":
+            remote_path = config_file[satellite]['remote_subpath'][str(prb)][instrument]["secondRemoteDir"]
         # # datatype = 'pitchangle'
-        # remote_path = config_file[satellite]['remote_subpath'][str(prb)][instrument]["secondRemoteDir"]
+
 
         subpathformat = config_file[satellite]['remote_subpath'][str(prb)][instrument][datatype][subpathKey]
         subpathformat = eval(f"f'{subpathformat}'")

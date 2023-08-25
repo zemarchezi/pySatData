@@ -14,7 +14,16 @@ config_file_sat = 'config_file.json'
 
 trange_plot=['2016-07-06', '2016-07-10'] # time range for ploting
 trange=['2016-07-05', '2016-07-11'] # time range for interpolated data (requires a little bit more to overcome the edge problemns in interpolation)
+#%%
+# test Download MAgEmphemeri data
+paramLoadSat = {"satellite": 'rbsp', "probe": 'a', "level": 'TS04', "rel": "rel03",
+                "instrument": 'MagEphem', "datatype": 'definitive'}
 
+varss_ephem = load_sat(trange=trange, satellite=paramLoadSat["satellite"],
+                     probe=[paramLoadSat["probe"]], level=paramLoadSat["level"], rel=paramLoadSat["rel"],
+                     instrument=paramLoadSat["instrument"],datatype=paramLoadSat["datatype"], downloadonly=True,
+                     testRemotePath=True,
+                     usePandas=False, usePyTplot=True)
 #%%
 # test loading merged Ace data
 # # define the details for OMNI datsa (Only if you need it)
