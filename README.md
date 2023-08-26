@@ -1,6 +1,6 @@
 # Basic documentation for pySatData
 
-The structure of most functions and some of loaders are from pySPEDAS (https://github.com/spedas/pyspedas) repository. I just used and organized in a way that I felt easier for my purposes :).
+Most functions' structure and some loaders are from the pySPEDAS (https://github.com/spedas/pyspedas) repository. I just used and organized it in a way that I felt was more accessible for my purposes :). There is an option to store the variables in a pandas DataFrame format or pytplot format.
 
 ## Requirements
 
@@ -10,16 +10,22 @@ Python 3.8+
 1. Clone or download the pySatData
 2. From the pySatData directory: 
 
-Installation: ```pip instal -e .```
+Installation: 
+```
+pip install -e .
+
+# for python >3
+pip3 install -e .
+```
 
 ***
 ## config_file.json
 
-If some change in downloding directories is needed, it can be done in this file.
+It can be done in this file if some change in downloading directories is needed.
 
 ```pysatdata/resources/config_file.json```
 
-This file sets the http directory for downloading data and the local directory to save the downloaded data.
+This file sets the HTTP directory for downloading data and the local directory to save the downloaded data.
 
 The local directory files are organized as http directory, i.e.:
 * RBSP: HOME/sat_data/rbsp/rbspa/l2/ect/rept/sectors/rel03/YYYY/filename.cdf
@@ -28,18 +34,65 @@ This files handles with the different http subpaths for the different levels and
 
 ***
 
+## Examples: Loading data.
+
+### RBSP REPT data
 ```python
-import json
+#Import the loading functions.
 from pysatdata.loaders.load import *
 
+# Define the time range for downloading data.
 trange=['2021-05-26', '2021-05-30']
 
-varss_rept = load_sat(trange=trange, satellite='rbsp',
-                     probe=['a'], level='2', rel='rel03',
-                     instrument='rept',datatype='sectors',
-                     config_file='./pysatdata/resources/config_file.json', downloadonly=False,
-                     usePandas=False, usePyTplot=True)
+# Loading Van Allen probes REPT data.
+varss_rept = load_sat(trange=trange, satellite="rbsp",
+                        probe=['a', 'b'], level="3", 
+                        rel="rel03", instrument="rept",
+                        datatype="sectors",
+                        downloadonly=False, 
+                        searchFilesFirst=True,
+                        usePandas=False,
+                        usePyTplot=True)
+```
+### RBSP EMFISIS data.
+
+```python
+varss_emfisis = load_sat(trange=trange, satellite="rbsp",
+                            probe=['a','b'], rel="rel03", level="3",
+                            instrument="emfisis", datatype="magnetometer",
+                            cadence="1sec", coord="gse",
+                            varnames=[], downloadonly=False,
+                            usePandas=True, usePyTplot=False)
 ```
 
+### RBSP MAGEIS data.
 
-See ```plot_interpFlux_RBSP.py``` for an example on plotting the interpolated electron flux 
+```python
+varss_mageis = load_sat(trange=trange, satellite="rbsp",
+                        probe=['a','b'], level="3", 
+                        rel="rel03", instrument="mageis",
+                        datatype="sectors",
+                        downloadonly=False, 
+                        usePandas=False, usePyTplot=True)
+```
+### RBSP EFW data.
+
+```python
+varss_efw = load_sat(trange=trange, satellite="rbps",
+                        probe=['a','b'], level="2", rel='rel03',
+                        instrument="efw", datatype="esvy_despun",
+                        varnames=['efield_mgse', 'lshell'], downloadonly=False,
+                        usePandas=False, usePyTplot=True)
+```
+
+### OMNI Solar wind data
+
+```python
+varss_omni = load_sat(trange=trange, satellite="omni",
+                         probe="omni"
+                         instrument="omni_cdaweb",datatype="hro_1min",
+                         downloadonly=False,
+                         usePandas=False, usePyTplot=True)
+```
+
+See ```plot_interpFlux_RBSP.py``` for an example of plotting the interpolated electron flux.
