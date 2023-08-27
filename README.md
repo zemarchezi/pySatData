@@ -5,10 +5,6 @@ Most functions' structure and some loaders are from the pySPEDAS (https://github
 ## Requirements
 
 Python 3.8+
-
-PySpedas: pip install pyspedas
-pyQtgraph: pip instal pyqtgraph
-
 Installation: 
 ```
 pip install pysatdata
