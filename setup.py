@@ -8,7 +8,7 @@ from codecs import open
 
 setup(
     name='pysatdata',
-    version='2.0.3',
+    version='2.0.4',
     description='Python Space Physics Satellite Data Analysis Toolkit',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -24,9 +24,9 @@ setup(
                  ],
     keywords='satellite space data tools',
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
-    install_requires=['requests', 'pyspedas>=1.4.44', 'pytplot-mpl-temp>=2.1.17',
+    install_requires=['requests', 'pytplot-mpl-temp>=2.1.17',
                       'cdflib>=0.3.20', 'cdasws>=1.7.24', 'netCDF4',
-                      'pywavelets', 'pyqtgraph==0.12.2', 'astropy', 'loguru',
+                      'pywavelets', 'astropy', 'loguru',
                       'aacgmv2>=2.6.2', 'matplotlib', 'netCDF4',
                       'pandas', 'pytz', 'scipy', 'tqdm',
                       'xarray','urllib3'],
