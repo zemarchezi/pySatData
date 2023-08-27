@@ -4,18 +4,14 @@ Most functions' structure and some loaders are from the pySPEDAS (https://github
 
 ## Requirements
 
-
 Python 3.8+
 
-1. Clone or download the pySatData
-2. From the pySatData directory: 
+PySpedas: pip install pyspedas
+pyQtgraph: pip instal pyqtgraph
 
 Installation: 
 ```
-pip install -e .
-
-# for python >3
-pip3 install -e .
+pip install pysatdata
 ```
 
 ***
