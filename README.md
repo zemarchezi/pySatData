@@ -5,8 +5,11 @@ Most functions' structure and some loaders are from the pySPEDAS (https://github
 ## Requirements
 
 Python 3.8+
-Installation: 
+### Installation: 
 ```
+conda create -n yourenvname python=x.x anaconda
+conda activate yourenvname
+
 pip install pysatdata
 ```
 
