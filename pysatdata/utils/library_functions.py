@@ -243,15 +243,17 @@ def cutFlux_lshell2(enSignal, lvalue):
 
 def testFiles(local_path, remote_names):
     non_exiting_names = []
+    existing_names = []
     for rn in remote_names:
         temp_find = glob.glob(f"{local_path}/{rn}")
         if len(temp_find)==0:
             non_exiting_names.append(rn)
         else:
+            existing_names.append(temp_find[0])
             logging.info(f"File is current: {temp_find[0]}")
 
 
-    return non_exiting_names
+    return non_exiting_names, existing_names
 
 
 def testRemoteDir(config_file, satellite, prb, instrument, level, datatype):
