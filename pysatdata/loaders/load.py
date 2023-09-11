@@ -87,13 +87,17 @@ def load_sat(trange: list=['2013-11-5', '2013-11-6'],
         
         if searchFilesFirst:
             remote_names = testFiles(local_path, remote_names)
+            out_files = []
+            if files is not None:
+                for file in files:
+                    out_files.append(file)
         
-        out_files = []
-
-        files = download(remote_file=remote_names, remote_path=remote_path, local_path=local_path, no_download=no_update)
-        if files is not None:
-            for file in files:
-                out_files.append(file)
+        else:  
+            out_files = []
+            files = download(remote_file=remote_names, remote_path=remote_path, local_path=local_path, no_download=no_update)
+            if files is not None:
+                for file in files:
+                    out_files.append(file)
 
     out_files = sorted(out_files)
 
