@@ -10,6 +10,6 @@ def version():
     None.
 
     """
-    import pkg_resources
-    ver = pkg_resources.get_distribution("pysatdata").version
-    print("pysatdata version: " + ver)
+    import importlib.metadata
+    ver = importlib.metadata.version('pysatdata')
+    print("dstdownloader version: " + ver)
