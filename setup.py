@@ -4,15 +4,18 @@
 from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
+import re
+import ast
 
+_version_re = re.compile(r'__version__\s+=\s+(.*)')
+
+with open('app_name/__init__.py', 'rb') as f:
+    version = str(ast.literal_eval(_version_re.search(
+        f.read().decode('utf-8')).group(1)))
 
 setup(
     name='pysatdata',
-    # version='2.0.20',
-    setuptools_git_versioning={
-        "enabled": True,
-    },
-    setup_requires=["setuptools-git-versioning<2"],
+    version=version,
     description='Python Space Physics Satellite Data Analysis Toolkit',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
