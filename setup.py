@@ -7,12 +7,9 @@ from codecs import open
 import re
 import ast
 
-_version_re = re.compile(r'__version__\s+=\s+(.*)')
-
-with open('pysatdata/__init__.py', 'rb') as f:
-    version = str(ast.literal_eval(_version_re.search(
-        f.read().decode('utf-8')).group(1)))
-
+with open('./pysatdata/VERSION.txt', 'r') as f:
+    # version = str(ast.literal_eval(f.read().decode('utf-8'))
+    version = f.read().strip()
 setup(
     name='pysatdata',
     version=version,
