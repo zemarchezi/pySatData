@@ -8,7 +8,11 @@ from codecs import open
 
 setup(
     name='pysatdata',
-    version='2.0.20',
+    # version='2.0.20',
+    setuptools_git_versioning={
+        "enabled": True,
+    },
+    setup_requires=["setuptools-git-versioning<2"],
     description='Python Space Physics Satellite Data Analysis Toolkit',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
