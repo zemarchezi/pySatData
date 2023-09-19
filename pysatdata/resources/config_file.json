@@ -223,6 +223,14 @@
              }           
          },
          "b":{
+            "MagEphem":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
+               "definitive":{
+                  "altern_subpath":"rbsp{prb}/{instrument}/{datatype}/%Y/",
+                  "subpath":"rbsp{prb}/{instrument}/{datatype}/%Y/",
+                  "filename":"rbsp{prb}_{datatype[0:3]}_{instrument}_{level}D_%Y%m%d_v*.h5",
+                  "altern_filename":"rbsp{prb}_{datatype[0:3]}_{instrument}_{level}D_%Y%m%d_v*.h5"
+               }
+            },
             "emfisis":{"secondRemoteDir": "https://emfisis.physics.uiowa.edu/Flight/",
                "wna-survey":{
                   "altern_subpath":"RBSP-{prb.upper()}/L{level}/%Y/%m/%d/",
