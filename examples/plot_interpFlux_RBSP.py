@@ -104,19 +104,19 @@ energyRange = range(0,4)
 # interFlux variable and the x, and y with the same resolution
 
 plotFluxParamsDict = {
-                      'specEnergy': spec,
-                      'time_dt_rept': time_dt_rept,
-                      'l_probe': l_rept,
-                      'cutLshell': cutLshell,
-                      'energyRange': energyRange,
-                      'trangeXlim': trange_plot,
-                      'fluxEnergyChanel': fluxEnergyChanel,
-                      'flux_rept_spec': flux_rept_spec,
-                      'xax': x_interp,
-                      'yax': y_interp,
-                      'maskflux': interpFlux,
-                      'time_dt_swe': time_dt_swe,
-                      'nP': nP,
+                      'specEnergy': spec, #eixo y plot do fluxo interpolado
+                      'l_probe': l_rept, # l shell ou l* 
+                      'cutLshell': cutLshell, # corte do fluxo
+                      'energyRange': energyRange, # faixa de energia para plotar os cortes
+                      'trangeXlim': trange_plot, # limite do eixo X para o plot [min, max]
+                      'fluxEnergyChanel': fluxEnergyChanel, # 
+                      'flux_rept_spec': flux_rept_spec, # fluxo de eletrons do rept
+                      'time_dt_rept': time_dt_rept, # eixo x para os dados do rept
+                      'xax': x_interp, # eixo x para o fluxo interpolado
+                      'yax': y_interp, # eixo y para o fluxo interpolado
+                      'maskflux': interpFlux, # fluxo interpolado
+                      'time_dt_swe': time_dt_swe, # eixo x para os dados do ace
+                      'nP': nP, 
                       'bgse_x': bgse_x,
                       'bgse_y': bgse_y,
                       'bgse_z': bgse_z,
