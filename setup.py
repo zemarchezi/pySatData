@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 from codecs import open
 import os
 
-with open(os.path.join(os.path.dirname(__file__), "VERSION.txt"), 'r') as f:
+with open("VERSION.txt"), 'r') as f:
     version = f.read().strip()
 setup(
     name='pysatdata',
