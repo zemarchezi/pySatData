@@ -3,12 +3,9 @@
 from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
-import re
-import ast
 
 #
 with open('pyproject.toml', 'r') as f:
-    # version = str(ast.literal_eval(f.read().decode('utf-8'))
     version = f.readlines()[2].split('\n')[0].split(' ')[-1].split('"')[1]
 
     
