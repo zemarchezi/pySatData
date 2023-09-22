@@ -9,9 +9,6 @@ from pysatdata.utils.interpolate_flux_rbsp import *
 from pysatdata.utils.plotFunc.plot_funtions import *
 
 
-# File with the data sources and local destinations
-config_file_sat = 'config_file.json'
-
 trange_plot=['2016-07-06', '2016-07-10'] # time range for ploting
 trange=['2016-07-05', '2016-07-11'] # time range for interpolated data (requires a little bit more to overcome the edge problemns in interpolation)
 #%%
@@ -46,7 +43,7 @@ paramLoadSat = {"satellite": 'rbsp', "probe": 'a', "level": '3', "rel": "rel03",
 varss_rept = load_sat(trange=trange, satellite=paramLoadSat["satellite"],
                      probe=[paramLoadSat["probe"]], level=paramLoadSat["level"], rel=paramLoadSat["rel"],
                      instrument=paramLoadSat["instrument"],datatype=paramLoadSat["datatype"],
-                     config_file=config_file_sat, downloadonly=False,
+                     downloadonly=False,
                      usePandas=False, usePyTplot=True)
 #%%
 # Since the variables are stored in memory we need to open to perform
@@ -73,7 +70,7 @@ pytplot.del_data()
 varss_aceSwe = load_sat(trange=trange, satellite=paramLoadSat['satellite'],
                          probe=[paramLoadSat['probe']], rel='rel03',
                          instrument=paramLoadSat['instrument'],datatype=paramLoadSat['datatype'],
-                         config_file=config_file_sat, downloadonly=False,
+                         downloadonly=False,
                          usePandas=False, usePyTplot=True)
 
 #%%
