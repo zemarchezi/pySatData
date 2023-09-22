@@ -6,11 +6,9 @@ from setuptools import setup, find_packages
 from codecs import open
 import os
 
-with open("VERSION.txt", 'r') as f:
-    version = f.read().strip()
 setup(
     name='pysatdata',
-    version=version,
+    version='2.1.5',
     description='Python Space Physics Satellite Data Analysis Toolkit',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
