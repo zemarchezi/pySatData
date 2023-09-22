@@ -1,6 +1,6 @@
 [project]
 name = "pysatdata"
-version = "0.0.1"
+version = "0.0.1b"
 authors = [
   { name="Jose Paulo Marchezi", email="jpmarchezi@gmail.com" },
 ]
