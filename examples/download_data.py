@@ -6,7 +6,6 @@ from pysatdata.utils.library_functions import *
 #%%
 trange= ['2012-11-01','2012-11-03']
 downloadonly = True
-config_file_sat = './pysatdata/resources/config_file.json'
 paramLoadrept = {"satellite": 'rbsp', "probe": ['a'], "level": '3', "rel": "rel03",
                     "instrument": 'rept', "datatype": "sectors"}
 #%%
@@ -14,7 +13,7 @@ varss_rept = load_sat(trange=trange, satellite=paramLoadrept['satellite'],
                         probe=paramLoadrept['probe'], level='2', 
                         rel=paramLoadrept['rel'], instrument=paramLoadrept['instrument'],
                         datatype=paramLoadrept['datatype'],testRemotePath=False,
-                        config_file=config_file_sat, downloadonly=downloadonly, 
+                        downloadonly=downloadonly, 
                         searchFilesFirst=True, usePandas=False, usePyTplot=True)
 #%%
 #
@@ -49,7 +48,7 @@ def downloadData(trange, config_file):
                             probe=[probe], rel='rel03', level=paramLoadEm['level'],
                             instrument=paramLoadEm['instrument'], datatype=paramLoadEm['datatype'],
                             cadence=paramLoadEm['cadence'], coord=paramLoadEm['coord'],
-                            config_file=config_file_sat, varnames=paramLoadEm['varnames'], downloadonly=downloadonly,
+                            varnames=paramLoadEm['varnames'], downloadonly=downloadonly,
                             usePandas=True, usePyTplot=False)
 
 
@@ -59,14 +58,14 @@ def downloadData(trange, config_file):
                         probe=paramLoadrept['probe'], level=paramLoadrept['level'], 
                         rel=paramLoadrept['rel'], instrument=paramLoadrept['instrument'],
                         datatype=paramLoadrept['datatype'],
-                        config_file=config_file_sat, downloadonly=downloadonly, 
+                        downloadonly=downloadonly, 
                         usePandas=False, usePyTplot=True)
     pytplot.del_data()
     varss_rept = load_sat(trange=trange, satellite=paramLoadrept['satellite'],
                         probe=paramLoadrept['probe'], level='2', 
                         rel=paramLoadrept['rel'], instrument=paramLoadrept['instrument'],
                         datatype=paramLoadrept['datatype'],
-                        config_file=config_file_sat, downloadonly=downloadonly, 
+                        downloadonly=downloadonly, 
                         usePandas=False, usePyTplot=True)
 
     pytplot.del_data()
@@ -74,14 +73,14 @@ def downloadData(trange, config_file):
                         probe=paramLoadmageis['probe'], level=paramLoadmageis['level'], 
                         rel=paramLoadmageis['rel'], instrument=paramLoadmageis['instrument'],
                         datatype=paramLoadmageis['datatype'],
-                        config_file=config_file_sat, downloadonly=downloadonly, 
+                        downloadonly=downloadonly, 
                         usePandas=False, usePyTplot=True)
     pytplot.del_data()
     varss_mageis = load_sat(trange=trange, satellite=paramLoadmageis['satellite'],
                         probe=paramLoadmageis['probe'], level='2', 
                         rel=paramLoadmageis['rel'], instrument=paramLoadmageis['instrument'],
                         datatype=paramLoadmageis['datatype'],
-                        config_file=config_file_sat, downloadonly=downloadonly, 
+                        downloadonly=downloadonly, 
                         usePandas=False, usePyTplot=True)
     # quants_fedu_rept = pytplot.data_quants['FEDU']
 
@@ -89,7 +88,7 @@ def downloadData(trange, config_file):
     varss_efw = load_sat(trange=trange, satellite=paramLoadEfw['satellite'],
                         probe=[probe], level=paramLoadEfw['level'], rel='rel03',
                         instrument=paramLoadEfw['instrument'], datatype=paramLoadEfw['datatype'],
-                        config_file=config_file_sat, varnames=paramLoadEfw['varnames'], downloadonly=downloadonly,
+                        varnames=paramLoadEfw['varnames'], downloadonly=downloadonly,
                         usePandas=False, usePyTplot=True)
 
 
