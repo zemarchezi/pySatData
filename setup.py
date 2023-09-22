@@ -4,11 +4,9 @@
 from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
-import re
-import ast
+import os
 
-with open('./pysatdata/VERSION.txt', 'r') as f:
-    # version = str(ast.literal_eval(f.read().decode('utf-8'))
+with open(os.path.join(os.path.dirname(__file__), "VERSION.txt"), 'r') as f:
     version = f.read().strip()
 setup(
     name='pysatdata',
