@@ -4,14 +4,10 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 
-#
-# with open('pyproject.toml', 'r') as f:
-#     version = f.readlines()[2].split('\n')[0].split(' ')[-1].split('"')[1]
-
     
 setup(
     name='pysatdata',
-    version='1.0.5',
+    version='1.0.6',
     description='Python Space Physics Satellite Data Analysis Toolkit',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
