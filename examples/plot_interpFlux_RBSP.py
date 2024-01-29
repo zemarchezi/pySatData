@@ -22,6 +22,18 @@ varss_ephem = load_sat(trange=trange, satellite=paramLoadSat["satellite"],
                      testRemotePath=True,
                      usePandas=False, usePyTplot=True)
 #%%
+trange_plot=['2005-07-03', '2005-07-05'] # time range for ploting
+trange=['2005-07-02', '2005-07-06'] 
+paramLoadSat = {"satellite": 'dmsp', "probe": 'f14',
+                "instrument": 'ssj', "datatype": 'precipitating-electrons-ions'}
+
+varss_dmsp = load_sat(trange=trange, satellite=paramLoadSat["satellite"],
+                     probe=[paramLoadSat["probe"]],
+                     instrument=paramLoadSat["instrument"],datatype=paramLoadSat["datatype"], downloadonly=False,
+                     testRemotePath=True,
+                     usePandas=False, usePyTplot=True)
+
+#%%
 # test loading merged Ace data
 # # define the details for OMNI datsa (Only if you need it)
 # paramLoadSat = {"satellite": 'ace', "probe": 'ace',"instrument": 'merged', "datatype": '4_min'}
