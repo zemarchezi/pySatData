@@ -1,0 +1,22 @@
+{
+  "erg": {
+    "local_data_dir":"sat_data/",
+    "remote_data_dir":"https://cdaweb.gsfc.nasa.gov/pub/data/erg/",
+    "remote_subpath":{
+       "erg":{
+          "hep":{
+             "omniflux":{
+                "subpath":"{instrument}/l{level}/{datatype}/%Y/",
+                "filename":"{prb}_{instrument}_l{level}_{datatype}_%Y%m%d_v*.cdf"
+             }
+          },
+          "orb":{
+             "orb":{
+                "subpath":"{instrument}/l{level}/%Y/",
+                "filename":"{prb}_{instrument}_l{level}_%Y%m%d_v*.cdf"
+             }
+          }
+       }
+    }
+ }
+}

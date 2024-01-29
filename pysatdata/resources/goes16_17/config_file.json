@@ -1,0 +1,37 @@
+{
+  "goes16_17":{
+     "local_data_dir":"sat_data/",
+     "remote_data_dir":"https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/",
+     "remote_data_dir2":"https://satdat.ngdc.noaa.gov/sem/goes/data/",
+     "remote_subpath":{
+        "17":{
+           "magn":{
+              "avg1m":{
+                 "subpath":"goes{prb}/l{level}/data/{instrument}-l{level}-{datatype}/%Y/%m/",
+                 "filename":"dn_{instrument}-l{level}-{datatype}_g{prb}_d%Y%m%d_*.nc"
+              }
+           }
+        },
+        "16":{
+           "magn":{
+              "avg1m":{
+                 "subpath":"goes{prb}/l{level}/data/{instrument}-l{level}-{datatype}/%Y/%m/",
+                 "filename":"dn_{instrument}-l{level}-{datatype}_g{prb}_d%Y%m%d_*.nc"
+              }
+           },
+           "euvs":{
+              "avg1m":{
+                 "subpath":"goes{prb}/l{level}/data/{instrument}-l{level}-{datatype}/%Y/%m/",
+                 "filename":"dn_{instrument}-l{level}-{datatype}_g{prb}_d%Y%m%d_*.nc"
+              }
+           },
+           "mpsh":{
+              "avg1m":{
+                 "subpath":"goes{prb}/l{level}/data/{instrument}-l{level}-{datatype}/%Y/%m/",
+                 "filename":"dn_{instrument}-l{level}-{datatype}_g{prb}_d%Y%m%d_*.nc"
+              }
+           }
+        }
+     }
+  }
+}

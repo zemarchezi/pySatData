@@ -1,0 +1,32 @@
+{
+  "omni":{
+    "local_data_dir":"sat_data/",
+    "remote_data_dir":"https://spdf.gsfc.nasa.gov/pub/data/omni/",
+    "remote_subpath":{
+       "omni":{
+          "omni_cdaweb":{
+             "hro_1min":{
+                "subpath":"{instrument}/{datatype}/%Y/",
+                "filename":"omni_{datatype}_%Y%m01_v*.cdf"
+             },
+             "hro_5min":{
+                "subpath":"{instrument}/{datatype}/%Y/",
+                "filename":"omni_{datatype}_%Y%m01_v*.cdf"
+             },
+             "hro2_1min":{
+                "subpath":"{instrument}/{datatype}/%Y/",
+                "filename":"omni_{datatype}_%Y%m01_v*.cdf"
+             },
+             "hro2_5min":{
+                "subpath":"{instrument}/{datatype}/%Y/",
+                "filename":"omni_{datatype}_%Y%m01_v*.cdf"
+             },
+             "hourly":{
+                "subpath":"{instrument}/{datatype}/%Y/",
+                "filename":"omni2_h0_mrg1hr_%Y%m01_v*.cdf"
+             }
+          }
+       }
+    }
+ }
+}
