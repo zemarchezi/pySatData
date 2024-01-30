@@ -1,1 +1,1 @@
-include pysatdata/resources/config_file.json
+include pysatdata/resources/**/*.json
