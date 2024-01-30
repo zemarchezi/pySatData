@@ -3,6 +3,15 @@
     "local_data_dir":"sat_data/",
     "remote_data_dir":"https://spdf.gsfc.nasa.gov/pub/data/dmsp/",
     "remote_subpath":{
+      "f13":{
+         "ssj":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
+            "precipitating-electrons-ions":{
+               "altern_subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
+               "subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
+               "filename":"dmsp-{prb}_{instrument}_{datatype}_%Y%m%d_v*.cdf"
+            }
+         }       
+      },
        "f14":{
           "ssj":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
              "precipitating-electrons-ions":{
@@ -11,7 +20,43 @@
                 "filename":"dmsp-{prb}_{instrument}_{datatype}_%Y%m%d_v*.cdf"
              }
           }       
-       }
+       },
+       "f15":{
+         "ssj":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
+            "precipitating-electrons-ions":{
+               "altern_subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
+               "subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
+               "filename":"dmsp-{prb}_{instrument}_{datatype}_%Y%m%d_v*.cdf"
+            }
+         }       
+      },
+      "f16":{
+         "ssj":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
+            "precipitating-electrons-ions":{
+               "altern_subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
+               "subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
+               "filename":"dmsp-{prb}_{instrument}_{datatype}_%Y%m%d_v*.cdf"
+            }
+         }       
+      },
+      "f17":{
+         "ssj":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
+            "precipitating-electrons-ions":{
+               "altern_subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
+               "subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
+               "filename":"dmsp-{prb}_{instrument}_{datatype}_%Y%m%d_v*.cdf"
+            }
+         }       
+      },
+      "f18":{
+         "ssj":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
+            "precipitating-electrons-ions":{
+               "altern_subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
+               "subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
+               "filename":"dmsp-{prb}_{instrument}_{datatype}_%Y%m%d_v*.cdf"
+            }
+         }       
+      }
     }
  }
 }
