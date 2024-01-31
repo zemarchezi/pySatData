@@ -16,7 +16,18 @@ varss_rept = load_sat(trange=trange, satellite=paramLoadrept['satellite'],
                         downloadonly=downloadonly, 
                         searchFilesFirst=True, usePandas=False, usePyTplot=True)
 #%%
-#
+
+trange_plot=['2012-07-03', '2012-07-05'] # time range for ploting
+trange=['2012-07-02', '2012-07-06'] 
+paramLoadSat = {"satellite": 'dmsp', "probe": 'f17',
+                "instrument": 'ssies', "datatype": 'thermal-plasma'}
+
+varss_dmsp = load_sat(trange=trange, satellite=paramLoadSat["satellite"],
+                     probe=[paramLoadSat["probe"]],
+                     instrument=paramLoadSat["instrument"],datatype=paramLoadSat["datatype"], downloadonly=False,
+                     testRemotePath=True,
+                     usePandas=False, usePyTplot=True)
+print(varss_dmsp)
 # for n, dd in enumerate(dataT.index):
 
 

@@ -37,7 +37,14 @@
                "subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
                "filename":"dmsp-{prb}_{instrument}_{datatype}_%Y%m%d_v*.cdf"
             }
-         }       
+         },
+         "ssies": {"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
+					"thermal-plasma": {
+						"altern_subpath": "dmsp{prb}/{instrument}/ssies-3rl/{datatype}-cdf/%Y/",
+						"subpath": "dmsp{prb}/{instrument}/ssies-3rl/{datatype}-cdf/%Y/",
+						"filename": "dmsp-{prb}_{instrument}-3_{datatype}_%Y%m%d*_v*.cdf"
+					}
+				}
       },
       "f17":{
          "ssj":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
@@ -46,7 +53,14 @@
                "subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
                "filename":"dmsp-{prb}_{instrument}_{datatype}_%Y%m%d_v*.cdf"
             }
-         }       
+         },
+         "ssies": {"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
+					"thermal-plasma": {
+						"altern_subpath": "dmsp{prb}/{instrument}/ssies-3rl/{datatype}-cdf/%Y/",
+						"subpath": "dmsp{prb}/{instrument}/ssies-3rl/{datatype}-cdf/%Y/",
+						"filename": "dmsp-{prb}_{instrument}-3_{datatype}_%Y%m%d*_v*.cdf"
+				}
+			}       
       },
       "f18":{
          "ssj":{"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
@@ -55,7 +69,14 @@
                "subpath":"dmsp{prb}/{instrument}/{datatype}/%Y/",
                "filename":"dmsp-{prb}_{instrument}_{datatype}_%Y%m%d_v*.cdf"
             }
-         }       
+         },
+         "ssies": {"secondRemoteDir": "https://rbsp-ect.newmexicoconsortium.org/data_pub/",
+					"thermal-plasma": {
+						"altern_subpath": "dmsp{prb}/{instrument}/ssies-3rl/{datatype}-cdf/%Y/",
+						"subpath": "dmsp{prb}/{instrument}/ssies-3rl/{datatype}-cdf/%Y/",
+						"filename": "dmsp-{prb}_{instrument}-3_{datatype}_%Y%m%d*_v*.cdf"
+					}
+			}    
       }
     }
  }
