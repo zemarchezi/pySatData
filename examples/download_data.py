@@ -8,6 +8,7 @@ trange= ['2012-11-01','2012-11-03']
 downloadonly = True
 paramLoadrept = {"satellite": 'rbsp', "probe": ['a'], "level": '3', "rel": "rel03",
                     "instrument": 'rept', "datatype": "sectors"}
+
 #%%
 varss_rept = load_sat(trange=trange, satellite=paramLoadrept['satellite'],
                         probe=paramLoadrept['probe'], level='2', 
@@ -15,6 +16,18 @@ varss_rept = load_sat(trange=trange, satellite=paramLoadrept['satellite'],
                         datatype=paramLoadrept['datatype'],testRemotePath=False,
                         downloadonly=downloadonly, 
                         searchFilesFirst=True, usePandas=False, usePyTplot=True)
+#%%
+
+paramLoadEm = {"satellite": 'themis', "probe": 'e', "level": '2', "rel": "rel03",
+                    "instrument": 'sst', "datatype": "sst", "coord": "gsm",
+                    "cadence": "1sec", "varnames": []}
+
+varss_sst = load_sat(trange=trange, satellite=paramLoadEm['satellite'],
+                                probe=[paramLoadEm['probe']], rel='rel03', level=paramLoadEm['level'],
+                                instrument=paramLoadEm['instrument'], datatype=paramLoadEm['datatype'],
+                                cadence=paramLoadEm['cadence'], coord=paramLoadEm['coord'],
+                                varnames=paramLoadEm['varnames'], downloadonly=False,
+                                usePandas=False, usePyTplot=True)
 #%%
 
 trange_plot=['2012-07-03', '2012-07-05'] # time range for ploting
