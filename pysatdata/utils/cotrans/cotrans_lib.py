@@ -12,10 +12,43 @@ These functions are in cotrans_lib.pro of IDL SPEDAS.
 For a comparison to IDL, see: http://spedas.org/wiki/index.php?title=Cotrans
 """
 import numpy as np
-from datetime import datetime
-from pyspedas.cotrans.igrf import set_igrf_params
-from pyspedas.cotrans.j2000 import set_j2000_params
+import logging
+from datetime import datetime, timezone, timedelta
+from pyspedas.cotrans_tools.igrf import set_igrf_params
+from pyspedas.cotrans_tools.j2000 import set_j2000_params
 
+
+def safe_fromtimestamp(timestamp):
+    """
+    Safely convert Unix timestamp to datetime object.
+
+    Parameters
+    ----------
+    timestamp : float or list of float
+        Unix timestamp
+
+    Returns
+    -------
+    list of datetime objects
+
+    Notes
+    -----
+    This function works for positive and negative timestamps.
+    """
+    result = []
+    if not isinstance(timestamp, list) and not isinstance(timestamp, np.ndarray):
+        t = [timestamp]
+    else:
+        t = timestamp
+        
+    for i in range(len(t)):
+        if int(t[i].timestamp()) > 0:
+            # result.append(datetime.fromtimestamp(t[i], timezone.utc))
+            result.append(t[i])
+        else:
+            result.append(datetime(1970, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=t[i]))
+
+    return result
 
 def get_time_parts(time_in):
     """
@@ -23,7 +56,7 @@ def get_time_parts(time_in):
 
     Parameters
     ----------
-    time_in: list of float
+    time_in: float or list of float
         Time array.
 
     Returns
@@ -40,12 +73,25 @@ def get_time_parts(time_in):
         Seconds and milliseconds.
 
     """
-    tnp = time_in# np.vectorize(datetime.utcfromtimestamp)(time_in[:])
+    # if time_in is not a list or ndarray, make it one
+    if not isinstance(time_in, list) and not isinstance(time_in, np.ndarray):
+        time_in = [time_in]
+
+    # Get datetime objects, in order to find year, doy, etc.
+    tnp = safe_fromtimestamp(time_in)
     iyear = np.array([tt.year for tt in tnp])
     idoy = np.array([tt.timetuple().tm_yday for tt in tnp])
     ih = np.array([tt.hour for tt in tnp])
     im = np.array([tt.minute for tt in tnp])
     isec = np.array([tt.second + tt.microsecond/1000000.0 for tt in tnp])
+
+    if len(tnp)==1:
+        # if only one element, return a scalar
+        iyear = iyear[0]
+        idoy = idoy[0]
+        ih = ih[0]
+        im = im[0]
+        isec = isec[0]
 
     return iyear, idoy, ih, im, isec
 
@@ -128,25 +174,32 @@ def cdipdir(time_in=None, iyear=None, idoy=None):
     Notes
     -----
     Compute geodipole axis direction from International Geomagnetic Reference
-    Field (IGRF-13) model for time interval 1970 to 2020.
+    Field (IGRF-14) model for time interval 1965 to 2030.
     For time out of interval, computation is made for nearest boundary.
     Same as SPEDAS cdipdir.
     """
     if (time_in is None) and (iyear is None) and (idoy is None):
-        print("Error: No time was provided.")
+        logging.error("Error: No time was provided.")
         return
 
     if (iyear is None) or (idoy is None):
         iyear, idoy, ih, im, isec = get_time_parts(time_in)
 
-    # IGRF-13 parameters, 1965-2020.
+    # Get IGRF-14 parameters, 1965-2025.
     minyear, maxyear, ga, ha, dg, dh = set_igrf_params()
 
+    # Find base year for IGRF coefficients.
     y = iyear - (iyear % 5)
     if y < minyear:
         y = minyear
-    elif y > maxyear:
-        y = maxyear
+    elif y > maxyear-5:
+        y = maxyear-5
+
+    # Do not interpolate beyond boundaries (minyear and maxyear).
+    if iyear < minyear:
+        iyear = minyear
+    elif iyear > maxyear:
+        iyear = maxyear
 
     year0 = y
     year1 = y + 5
@@ -252,16 +305,17 @@ def cdipdir_vect(time_in=None, iyear=None, idoy=None):
 
     for i in range(len(idoy)):
         # check the cache before re-calculating the dipole direction
-        if cdipdir_cache.get(iyear[i] + idoy[i]) != None:
-            d1.append(cdipdir_cache.get(iyear[i] + idoy[i])[0])
-            d2.append(cdipdir_cache.get(iyear[i] + idoy[i])[1])
-            d3.append(cdipdir_cache.get(iyear[i] + idoy[i])[2])
+        cached_value = cdipdir_cache.get(1000*iyear[i]+idoy[i])
+        if cached_value != None:
+            d1.append(cached_value[0])
+            d2.append(cached_value[1])
+            d3.append(cached_value[2])
             continue
         _d1, _d2, _d3 = cdipdir(None, iyear[i], idoy[i])
         d1.append(_d1)
         d2.append(_d2)
         d3.append(_d3)
-        cdipdir_cache[iyear[i] + idoy[i]] = [_d1, _d2, _d3]
+        cdipdir_cache[1000*iyear[i] + idoy[i]] = [_d1, _d2, _d3]
 
     return np.array(d1), np.array(d2), np.array(d3)
 
@@ -329,7 +383,7 @@ def subgei2gse(time_in, data_in):
 
     """
     xgse, ygse, zgse = tgeigse_vect(time_in, data_in)
-    print("Running transformation: subgei2gse")
+    logging.info("Running transformation: subgei2gse")
     return np.column_stack([xgse, ygse, zgse])
 
 
@@ -396,7 +450,7 @@ def subgse2gei(time_in, data_in):
 
     """
     xgei, ygei, zgei = tgsegei_vect(time_in, data_in)
-    print("Running transformation: subgse2gei")
+    logging.info("Running transformation: subgse2gei")
     return np.column_stack([xgei, ygei, zgei])
 
 
@@ -476,7 +530,7 @@ def subgse2gsm(time_in, data_in):
 
     """
     xgsm, ygsm, zgsm = tgsegsm_vect(time_in, data_in)
-    print("Running transformation: subgse2gsm")
+    logging.info("Running transformation: subgse2gsm")
     return np.column_stack([xgsm, ygsm, zgsm])
 
 
@@ -557,7 +611,7 @@ def subgsm2gse(time_in, data_in):
 
     """
     xgse, ygse, zgse = tgsmgse_vect(time_in, data_in)
-    print("Running transformation: subgsm2gse")
+    logging.info("Running transformation: subgsm2gse")
     return np.column_stack([xgse, ygse, zgse])
 
 
@@ -629,7 +683,7 @@ def subgsm2sm(time_in, data_in):
 
     """
     xsm, ysm, zsm = tgsmsm_vect(time_in, data_in)
-    print("Running transformation: subgsm2sm")
+    logging.info("Running transformation: subgsm2sm")
     return np.column_stack([xsm, ysm, zsm])
 
 
@@ -701,7 +755,7 @@ def subsm2gsm(time_in, data_in):
 
     """
     xgsm, ygsm, zgsm = tsmgsm_vect(time_in, data_in)
-    print("Running transformation: subsm2gsm")
+    logging.info("Running transformation: subsm2gsm")
     return np.column_stack([xgsm, ygsm, zgsm])
 
 
@@ -733,7 +787,7 @@ def subgei2geo(time_in, data_in):
     ygeo = -sgst * xgei + cgst * ygei
     zgeo = zgei
 
-    print("Running transformation: subgei2geo")
+    logging.info("Running transformation: subgei2geo")
     return np.column_stack([xgeo, ygeo, zgeo])
 
 
@@ -765,7 +819,7 @@ def subgeo2gei(time_in, data_in):
     ygei = sgst * xgeo + cgst * ygeo
     zgei = zgeo
 
-    print("Running transformation: subgeo2gei")
+    logging.info("Running transformation: subgeo2gei")
     return np.column_stack([xgei, ygei, zgei])
 
 
@@ -826,7 +880,7 @@ def subgeo2mag(time_in, data_in):
         mlat[1, 1] = 1.0
         mag[i] = mlat @ out
 
-    print("Running transformation: subgeo2mag")
+    logging.info("Running transformation: subgeo2mag")
     return mag
 
 
@@ -886,7 +940,7 @@ def submag2geo(time_in, data_in):
         glong[2, 2] = 1.0
         geo[i] = glong @ out
 
-    print("Running transformation: submag2geo")
+    logging.info("Running transformation: submag2geo")
     return geo
 
 
@@ -1097,7 +1151,7 @@ def subgei2j2000(time_in, data_in):
     cmatrix = j2000_matrix_vec(time_in)
     d_out = ctv_mx_vec_rot(cmatrix, d)
 
-    print("Running transformation: subgei2j2000")
+    logging.info("Running transformation: subgei2j2000")
     return np.transpose(d_out)
 
 
@@ -1125,7 +1179,7 @@ def subj20002gei(time_in, data_in):
     icmatrix = np.transpose(cmatrix, (1, 0, 2))
     d_out = ctv_mx_vec_rot(icmatrix, d)
 
-    print("Running transformation: subj20002gei")
+    logging.info("Running transformation: subj20002gei")
     return np.transpose(d_out)
 
 
@@ -1257,19 +1311,23 @@ def subcotrans(time_in, data_in, coord_in, coord_out):
     coord_in = coord_in.lower()
     coord_out = coord_out.lower()
 
-    if (coord_in not in coord_all) or (coord_out not in coord_all):
-        print("Error: coordinate system cannot be found.")
+    if coord_in not in coord_all:
+        logging.error("Unknown coord_in value %s",coord_in)
+        return None
+
+    if coord_out not in coord_all:
+        logging.error("Unknown coord_out value %s",coord_out)
         return None
 
     if coord_in == coord_out:
-        print("Warning: coord_in equal to coord_out.")
+        logging.warning("Warning: coord_in equal to coord_out.")
         return data_out
 
     # Construct a list of transformations.
     p = find_path_t1_t2(coord_in, coord_out)
     p = shorten_path_t1_t2(p)
     p = shorten_path_t1_t2(p)
-    print(p)
+    logging.info(p)
 
     # Daisy chain the list of transformations.
     for i in range(len(p)-1):
