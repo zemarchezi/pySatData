@@ -1,6 +1,6 @@
 {
   "erg": {
-    "local_data_dir":"sat_data/",
+    "local_data_dir":"/data/marchezi/sat_data/",
     "remote_data_dir":"https://cdaweb.gsfc.nasa.gov/pub/data/erg/",
     "remote_subpath":{
        "erg":{

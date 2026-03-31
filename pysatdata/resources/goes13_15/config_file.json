@@ -1,6 +1,6 @@
 {
   "goes13_15":{
-    "local_data_dir":"sat_data/",
+    "local_data_dir":"/data/marchezi/sat_data/",
     "remote_data_dir":"https://cdaweb.gsfc.nasa.gov/pub/data/goes/",
     "remote_subpath":{
        "15":{

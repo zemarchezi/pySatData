@@ -63,18 +63,17 @@ def butter_highpass_filter(data, cutoff, fs, order=5):
 
 # fill the gaps with nans
 def fill_nan(A):
-    '''
-     interpolate to fill nan values
-     '''
-    if np.isnan(A[0]):
-        A[0] = np.nanmin(A)
-    if np.isnan(A[-1]):
-        A[-1] = np.nanmin(A)
-    inds = np.arange(A.shape[0])
-    good = np.where(np.isfinite(A))
-    f = interp.interp1d(inds[good], A[good], bounds_error=False)
-    B = np.where(np.isfinite(A), A, f(inds))
-    return B
+    # Check if a 2D array is passed
+    if A.ndim > 1:
+        # Check if any element in the first row is NaN
+        if np.isnan(A[0, :]).any(): 
+            # Replace NaNs in first row with minimum of the whole array
+            A[0, np.isnan(A[0, :])] = np.nanmin(A) 
+    else:
+        # Original 1D logic
+        if np.isnan(A[0]):
+            A[0] = np.nanmin(A)
+    return A
 
 def format_func(value, tick_number):
     hora = pd.to_datetime(mdates.num2date(value)).replace(tzinfo=None)

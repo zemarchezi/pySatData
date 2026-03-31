@@ -4,19 +4,32 @@ from pysatdata.utils.interpolate_flux_rbsp import *
 from pysatdata.utils.plotFunc.plot_funtions import *
 from pysatdata.utils.library_functions import *
 #%%
-trange= ['2012-11-01','2012-11-03']
+trange= ['2018-01-01','2019-01-01']
 downloadonly = True
-paramLoadrept = {"satellite": 'rbsp', "probe": ['a'], "level": '3', "rel": "rel03",
+paramLoadrept = {"satellite": 'rbsp', "probe": ['b'], "level": '3', "rel": "rel03",
                     "instrument": 'rept', "datatype": "sectors"}
 
 #%%
 varss_rept = load_sat(trange=trange, satellite=paramLoadrept['satellite'],
-                        probe=paramLoadrept['probe'], level='2', 
+                        probe=paramLoadrept['probe'], level=paramLoadrept['level'], 
                         rel=paramLoadrept['rel'], instrument=paramLoadrept['instrument'],
                         datatype=paramLoadrept['datatype'],testRemotePath=False,
                         downloadonly=downloadonly, 
                         searchFilesFirst=True, usePandas=False, usePyTplot=True)
-#%%
+
+trange= ['2015-01-01','2016-01-01']
+downloadonly = True
+
+varss_rept = load_sat(trange=trange, satellite=paramLoadrept['satellite'],
+                        probe=paramLoadrept['probe'], level=paramLoadrept['level'], 
+                        rel=paramLoadrept['rel'], instrument=paramLoadrept['instrument'],
+                        datatype=paramLoadrept['datatype'],testRemotePath=False,
+                        downloadonly=downloadonly, 
+                        searchFilesFirst=True, usePandas=False, usePyTplot=True)
+
+exit()
+paramLoadrept = {"satellite": 'rbsp', "probe": ['b'], "level": '3', "rel": "rel03",
+                    "instrument": 'rept', "datatype": "sectors"}
 
 paramLoadEm = {"satellite": 'themis', "probe": 'e', "level": '2', "rel": "rel03",
                     "instrument": 'sst', "datatype": "sst", "coord": "gsm",

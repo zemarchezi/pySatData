@@ -9,8 +9,8 @@ from pysatdata.utils.interpolate_flux_rbsp import *
 from pysatdata.utils.plotFunc.plot_funtions import *
 
 
-trange_plot=['2016-07-06', '2016-07-10'] # time range for ploting
-trange=['2016-07-05', '2016-07-11'] # time range for interpolated data (requires a little bit more to overcome the edge problemns in interpolation)
+trange_plot=['2015-01-02', '2015-01-03'] # time range for ploting
+trange=['2015-01-01', '2015-01-04'] # time range for interpolated data (requires a little bit more to overcome the edge problemns in interpolation)
 #%%
 # test Download MAgEmphemeri data
 paramLoadSat = {"satellite": 'rbsp', "probe": 'a', "level": 'TS04', "rel": "rel03",
@@ -34,7 +34,8 @@ varss_ephem = load_sat(trange=trange, satellite=paramLoadSat["satellite"],
 
 #%%
 
-paramLoadSat = {"satellite": 'rbsp', "probe": 'a', "level": '3', "rel": "rel03",
+
+paramLoadSat = {"satellite": 'rbsp', "probe": 'b', "level": '3', "rel": "rel03",
                 "instrument": 'rept', "datatype": 'sectors'}
 
 # The command below will download the data in the "sat_data" repository in the root directory of
@@ -48,20 +49,20 @@ varss_rept = load_sat(trange=trange, satellite=paramLoadSat["satellite"],
 #%%
 # Since the variables are stored in memory we need to open to perform
 # the cleaning and select the desired chanel
-quants_fedu_rept = pytplot.data_quants['FEDU'] # FEDU is the high energy flux electron of Rept instrument
-flux_rept = quants_fedu_rept.values # flux_rept is a 3D variavle (time x pitchAngle x energy)
+quants_fedu_rept = pyspedas.get('FEDU') # FEDU is the high energy flux electron of Rept instrument
+flux_rept = np.asarray(quants_fedu_rept.y) # flux_rept is a 3D variavle (time x pitchAngle x energy)
 flux_rept[flux_rept == -9999999848243207295109594873856.000] = np.nan
 flux_rept[flux_rept == -1e31] = np.nan
 
 # Get the mean value over all pitch angles
 flux_rept_spec = np.nanmean(flux_rept, axis=1)
-l_rept = pytplot.data_quants['L_star'].values 
+l_rept = np.asarray(pyspedas.get('L_star').y)
 l_rept[l_rept == -9999999848243207295109594873856.000] = np.nan
 l_rept[l_rept == -1e31] = np.nan
-time_dt_rept = quants_fedu_rept.coords['time'].values
+time_dt_rept = np.asarray(quants_fedu_rept.times)
 # time_dt_rept = [datetime.datetime.fromtimestamp(i, pytz.timezone("UTC")) for i in time_rept]
-spec = quants_fedu_rept.coords['spec_bins'].values
-v1 = quants_fedu_rept.coords['v1'].values
+spec = np.asarray(quants_fedu_rept.v2)
+v1 = np.asarray(quants_fedu_rept.v1)
 
 #%%
 # define the details for OMNI datsa (Only if you need it)
@@ -74,18 +75,18 @@ varss_aceSwe = load_sat(trange=trange, satellite=paramLoadSat['satellite'],
                          usePandas=False, usePyTplot=True)
 
 #%%
-quants_Swe = pytplot.data_quants['proton_density']
-time_dt_swe = quants_Swe.coords['time'].values
+quants_Swe = pyspedas.get('proton_density')
+time_dt_swe = np.asarray(quants_Swe.times)
 # time_dt_swe = [datetime.datetime.fromtimestamp(i, pytz.timezone("UTC")) for i in time_swe]
-nP = pytplot.data_quants['proton_density'].values
-bgse_x = pytplot.data_quants['BX_GSE'].values
-bgse_y = pytplot.data_quants['BY_GSM'].values
-bgse_z = pytplot.data_quants['BZ_GSM'].values
+nP = np.asarray(pyspedas.get('proton_density').y)
+bgse_x = np.asarray(pyspedas.get('BX_GSE').y)
+bgse_y = np.asarray(pyspedas.get('BY_GSM').y)
+bgse_z = np.asarray(pyspedas.get('BZ_GSM').y)
 b_total = np.sqrt((bgse_x**2 + bgse_y**2 + bgse_z**2))
-flow_speed = pytplot.data_quants['flow_speed'].values
-imf = pytplot.data_quants['IMF'].values
-ae_index = pytplot.data_quants['AE_INDEX'].values
-symH_index = pytplot.data_quants['SYM_H'].values
+flow_speed = np.asarray(pyspedas.get('flow_speed').y)
+imf = np.asarray(pyspedas.get('IMF').y)
+ae_index = np.asarray(pyspedas.get('AE_INDEX').y)
+symH_index = np.asarray(pyspedas.get('SYM_H').y)
 
 #%%
 fluxEnergyChanel = 1 # Deine the energy level to do the interpolation
@@ -137,5 +138,3 @@ plotFluxParamsDict = {
 #%%
 
 plot_classicFluxSWparams(**plotFluxParamsDict)
-
-# %%

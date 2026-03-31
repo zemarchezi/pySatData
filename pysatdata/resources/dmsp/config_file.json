@@ -1,6 +1,6 @@
 {
   "dmsp":{
-    "local_data_dir":"sat_data/",
+    "local_data_dir":"/data/marchezi/sat_data/",
     "remote_data_dir":"https://spdf.gsfc.nasa.gov/pub/data/dmsp/",
     "remote_subpath":{
       "f13":{
