@@ -9,18 +9,19 @@ from pysatdata.utils.interpolate_flux_rbsp import *
 from pysatdata.utils.plotFunc.plot_funtions import *
 
 
-trange_plot=['2015-01-02', '2015-01-03'] # time range for ploting
-trange=['2015-01-01', '2015-01-04'] # time range for interpolated data (requires a little bit more to overcome the edge problemns in interpolation)
+trange_plot=['2015-08-13', '2015-08-19'] # time range for ploting
+# trange=['2013-12-31', '2015-01-01'] # time range for interpolated data (requires a little bit more to overcome the edge problemns in interpolation)
+trange=['2015-08-13', '2015-08-20']
 #%%
-# test Download MAgEmphemeri data
-paramLoadSat = {"satellite": 'rbsp', "probe": 'a', "level": 'TS04', "rel": "rel03",
-                "instrument": 'MagEphem', "datatype": 'definitive'}
+# # test Download MAgEmphemeri data
+# paramLoadSat = {"satellite": 'rbsp', "probe": 'a', "level": 'TS04', "rel": "rel03",
+#                 "instrument": 'MagEphem', "datatype": 'definitive'}
 
-varss_ephem = load_sat(trange=trange, satellite=paramLoadSat["satellite"],
-                     probe=[paramLoadSat["probe"]], level=paramLoadSat["level"], rel=paramLoadSat["rel"],
-                     instrument=paramLoadSat["instrument"],datatype=paramLoadSat["datatype"], downloadonly=True,
-                     testRemotePath=True,
-                     usePandas=False, usePyTplot=True)
+# varss_ephem = load_sat(trange=trange, satellite=paramLoadSat["satellite"],
+#                      probe=[paramLoadSat["probe"]], level=paramLoadSat["level"], rel=paramLoadSat["rel"],
+#                      instrument=paramLoadSat["instrument"],datatype=paramLoadSat["datatype"], downloadonly=True,
+#                      testRemotePath=True,
+#                      usePandas=False, usePyTplot=True)
 #%%
 # test loading merged Ace data
 # # define the details for OMNI datsa (Only if you need it)
@@ -35,15 +36,15 @@ varss_ephem = load_sat(trange=trange, satellite=paramLoadSat["satellite"],
 #%%
 
 
-paramLoadSat = {"satellite": 'rbsp', "probe": 'b', "level": '3', "rel": "rel03",
+paramLoadSat_van = {"satellite": 'rbsp', "probe": 'a', "level": '2', "rel": "rel03",
                 "instrument": 'rept', "datatype": 'sectors'}
 
 # The command below will download the data in the "sat_data" repository in the root directory of
 # your computer (This is the default, you can change it in the config_file.json file). 
 # The variables will be stored as pytplot format, the same way as pyspedas does.
-varss_rept = load_sat(trange=trange, satellite=paramLoadSat["satellite"],
-                     probe=[paramLoadSat["probe"]], level=paramLoadSat["level"], rel=paramLoadSat["rel"],
-                     instrument=paramLoadSat["instrument"],datatype=paramLoadSat["datatype"],
+varss_rept = load_sat(trange=trange, satellite=paramLoadSat_van["satellite"],
+                     probe=[paramLoadSat_van["probe"]], level=paramLoadSat_van["level"], rel=paramLoadSat_van["rel"],
+                     instrument=paramLoadSat_van["instrument"],datatype=paramLoadSat_van["datatype"],
                      downloadonly=False,
                      usePandas=False, usePyTplot=True)
 #%%
@@ -94,7 +95,7 @@ fluxEnergyChanel = 1 # Deine the energy level to do the interpolation
 x_interp, y_interp, interpFlux = interpolateFluxRbsp(flux_rept_spec[:,fluxEnergyChanel], l_rept, pd.to_datetime(time_dt_rept))
 cutLshell = 5.
 energyRange = range(0,4)
-
+#%%
 # Those are the input to plot a graph with the interpolated flux and 
 # the solar wind paramenters. You can find the plot funtion at
 # pysatdata/utils/plotFunc/plot_funtions.py 
@@ -125,16 +126,17 @@ plotFluxParamsDict = {
                       'symH_index': symH_index,
                       'fontsize': 16,
                       'probe': 'A',
-                      'level': 2,
+                      'level': int(paramLoadSat_van['level']),
                       'plotDir': 'rbsp/rept/',
                       'figureIdentify': None,
-                      'interpolatedFlux': True,
+                      'interpolatedFlux': False,
                       'vmin': 1,
                       'vmax': 1e6,
-                      'lshellOrlStar': 'L Shell'
+                      'lshellOrlStar': 'L Star'
                      }
 
 
 #%%
 
 plot_classicFluxSWparams(**plotFluxParamsDict)
+# %%
